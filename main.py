@@ -32,7 +32,7 @@ def login_is_required(function):
 			return abort(401)  # Authorization required
 		else:
 			return function()
-
+	#wrapper.__name__ = func.__name__
 	return wrapper
 
 
@@ -75,15 +75,20 @@ def index():
 	return render_template("index.html")
 
 
-@app.route("/protected")
+@app.route("/protected", endpoint='protected')
 @login_is_required
 def protected():
 	return render_template("protected.html", username=session['name'])
 
-@app.route("/post")
-#@login_is_required
+@app.route("/post", endpoint='post')
+@login_is_required
 def post():
 	return render_template("post.html")
+
+@app.route("/browse", endpoint='browse')
+@login_is_required
+def browse():
+	return render_template("browse.html")
 
 if __name__ == '__main__':
     app.run(port=8040, host='0.0.0.0', debug=False)
