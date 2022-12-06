@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>【書愛流動】登入</title>
+	<title>【書愛流動】發布貼文</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -25,8 +25,23 @@
 
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
-		<div class=description>「書愛流動」是一個讓二手學習用書流動的平台。提供書籍的民眾可以提出服務需求，需要書的學生則以服務賺取點數來兌換學習用書。藉此資源被重複使用，也讓社會因為大家的善心變得更美好。</div>
-		<a href='/login' class=login><button>Log In</button></a>
+		<form action='/browse' method="post" class="post-form">
+			<div>
+				<label for="title" class="post-label">書名:</label>
+				<input type="text" name="title" class="post-input">				
+			</div>
+			<div>
+				<label for="subject" class="post-label">科目:</label>
+				<select name="subject" class="post-input">
+					<option value="chinese">國文</option>
+					<option value="english">英文</option>
+					<option value="math">數學</option>
+				</select>
+			</div>
+
+			<input type="submit" value="Post">
+
+		</form>
 	</div>
 	<script src="{{url_for('static', filename='script.js')}}"></script>
 

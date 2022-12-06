@@ -80,6 +80,10 @@ def index():
 def protected():
 	return render_template("protected.html", username=session['name'])
 
+@app.route("/post")
+#@login_is_required
+def post():
+	return render_template("post.html")
 
 if __name__ == '__main__':
     app.run(port=8040, host='0.0.0.0', debug=False)
