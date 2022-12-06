@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>BOOKS RIVER</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+	<!-- Sidebar -->
+	<div class="sidebar" style="display:none" id="sidebar">
+		<div class="sidebar-container">
+	  		<button class="close" onclick="sclose()">&times;</button>
+			<a href="/protected">Home</a>
+			<a href="#">Browse</a>
+			<a href="#">Feedback</a>
+		</div>
+	</div>
+	<div class="banner_container">
+        <img src="{{ url_for('static', filename='images/banner.png') }}" alt="banner">
+    </div>
+
+	<div class="container">
+  		<button class="open" onclick="sopen()">〉</button>
+		<p>Hi {{ username }}!</p>
+	</div>
+	<script src="{{url_for('static', filename='script.js')}}"></script>
+
+</body>
+</html>
+
