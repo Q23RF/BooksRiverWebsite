@@ -12,7 +12,7 @@
 }
 
 body{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Noto Sans TC', Arial, sans-serif;
 	font-size: 14px;
 	color: var(--wh);
     background-color: var(--br);
@@ -23,6 +23,14 @@ body{
 .banner_container img{
     width: 100%;
     height: auto;
+}
+
+.icons {
+    width: 100%;
+	height: 12.5vw;
+	margin-top: 20px;
+    background: url("/static/images/1.png") no-repeat;
+	background-size: 100vw auto;
 }
 
 .container{
@@ -62,7 +70,6 @@ body{
 	padding-bottom: 1vh;
 	letter-spacing: 0.1em;
 	text-decoration: none;
-	display: block;
 }
 
 .open {
@@ -76,25 +83,31 @@ body{
 
 .close {
 	align-self: flex-end;
+	padding: 0;
+	margin-right: min(1.5vw, 20px);
 }
 
 .description {
 	font-size: 2vw;
-	padding: 3vw 3vw 0 3vw;
+	margin-top: max(3vw, 20px);
+	padding: 0 5vw;
 	text-align: center;
 }
 
 .login {
-	margin-top: 5px;
+	margin-top: 20px;
+	background-color: var(--wh);
+	color: var(--brDark);
 }
 
 button, input[type="submit"] {
 	background-color: var(--brDark);
 	color: var(--wh);
 	font-size: 2vw;
+    font-family: 'Noto Sans TC', Arial, sans-serif;
 	border: none;
 	border-radius: 3px;
-	padding: 8px;
+	padding: 10px 15px;
 	margin-top: 15px;
 	cursor: pointer;
 }
@@ -118,19 +131,26 @@ button, input[type="submit"] {
 
 }
 
+@media (min-width: 720px) {
+.description {
+	font-size: 14.4px;
+	padding: 0 36px;
+}
+}
+
 @media (min-width: 960px) {
 
 .sidebar-container a {
 	font-size: 33px;
 }
 
-button, input[type="submit"] {
-	font-size: 19.2px;
+.icons {
+    background: url("/static/images/2.png") no-repeat;
+	background-size: 100vw auto;
 }
 
-.description {
+button, input[type="submit"] {
 	font-size: 19.2px;
-	padding: 28.8px 28.8px 0 28.8px;
 }
 
 .post-form {

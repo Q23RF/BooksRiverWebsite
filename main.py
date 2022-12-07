@@ -1,6 +1,4 @@
 import os
-import pathlib
-
 import requests
 from flask import Flask, session, abort, redirect, request, render_template
 from google.oauth2 import id_token
@@ -9,7 +7,7 @@ from pip._vendor import cachecontrol
 import google.auth.transport.requests
 
 app = Flask("Google Login App")
-app.secret_key = "CodeSpecialist.com"
+app.secret_key = os.environ['SECRET_KEY']
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
