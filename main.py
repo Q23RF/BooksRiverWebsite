@@ -6,7 +6,7 @@ from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
 
-app = Flask("Google Login App")
+app = Flask('BooksRiver')
 app.secret_key = os.environ['SECRET_KEY']
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -20,7 +20,7 @@ flow = Flow.from_client_secrets_file(
   "https://www.googleapis.com/auth/userinfo.profile",
   "https://www.googleapis.com/auth/userinfo.email", "openid"
  ],
- redirect_uri="https://google-login-flask.q23rf.repl.co/callback")
+ redirect_uri="https://BooksRiver.q23rf.repl.co/callback")
 
 
 def login_is_required(function):

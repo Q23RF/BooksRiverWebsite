@@ -106,8 +106,8 @@ button, input[type="submit"] {
 	font-size: 2vw;
     font-family: 'Noto Sans TC', Arial, sans-serif;
 	border: none;
-	border-radius: 3px;
-	padding: 10px 15px;
+	border-radius: 5px;
+	padding: 10px 20px;
 	margin-top: 15px;
 	cursor: pointer;
 }
