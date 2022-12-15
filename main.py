@@ -5,14 +5,33 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
+from flask_sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy()
 app = Flask('BooksRiver')
 app.secret_key = os.environ['SECRET_KEY']
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///info.db"
+db.init_app(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String)
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String)
+    title = db.Column(db.String)
+    subject = db.Column(db.String)
+    grade = db.Column(db.String)
+    status = db.Column(db.Integer)
+
+with app.app_context():
+    db.create_all()
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-GOOGLE_CLIENT_ID = "532469693622-22sldndpftkgp3k3h9nfkbe2h517f0da.apps.googleusercontent.com"
 client_secrets_file = "client_secret.json"
+GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 
 flow = Flow.from_client_secrets_file(
  client_secrets_file=client_secrets_file,
