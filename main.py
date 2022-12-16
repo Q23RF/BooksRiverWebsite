@@ -107,7 +107,6 @@ def protected():
 def post():
 	return render_template("post.html")
 
-
 @app.route("/browse", endpoint='browse', methods=["GET", "POST"])
 @login_is_required
 def browse():
@@ -122,6 +121,22 @@ def browse():
 	posts = db.session.execute(db.select(Post).order_by(Post.id)).scalars()
 	return render_template("browse.html", posts=posts)
 
+@app.route("/browse", endpoint='browse', methods=["GET", "POST"])
+@login_is_required
+def browse():
+    if request.method == "POST":
+        post = Post(
+			username=session['name'],
+            title=request.form["title"],
+            subject=request.form["subject"],
+            grade=request.form["grade"],
+		    status = 0
+        )
+        db.session.add(post)
+        db.session.commit()
+    posts = db.session.execute(db.select(Post).order_by(Post.id)).scalars()
+    return render_template("browse.html", posts=posts)
+>>>>>>> origin/main
 
 if __name__ == '__main__':
 	app.run(port=8040, host='0.0.0.0', debug=False)
