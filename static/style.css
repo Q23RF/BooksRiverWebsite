@@ -113,7 +113,7 @@ button, input[type="submit"] {
 }
 
 .post-form {
-	margin-top: 15px;
+	margin-top: 20px;
 	font-size: 2vw;
 	display: flex;
 	flex-direction: column;
@@ -131,6 +131,13 @@ button, input[type="submit"] {
 	border-radius: 5px;
 	border: none;
 
+}
+
+.post-button {
+	position: fixed;
+	border-radius: 50%;
+	left: 30px;
+	bottom: 50px;
 }
 
 @media (min-width: 720px) {

@@ -13,20 +13,23 @@ app.secret_key = os.environ['SECRET_KEY']
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///info.db"
 db.init_app(app)
 
+
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String)
+	id = db.Column(db.Integer, primary_key=True)
+	email = db.Column(db.String)
+
 
 class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String)
-    title = db.Column(db.String)
-    subject = db.Column(db.String)
-    grade = db.Column(db.String)
-    status = db.Column(db.Integer)
+	id = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String)
+	title = db.Column(db.String)
+	subject = db.Column(db.String)
+	grade = db.Column(db.Integer)
+	status = db.Column(db.Integer)
+
 
 with app.app_context():
-    db.create_all()
+	db.create_all()
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
@@ -49,6 +52,7 @@ def login_is_required(function):
 			return abort(401)  # Authorization required
 		else:
 			return function()
+
 	#wrapper.__name__ = func.__name__
 	return wrapper
 
@@ -97,15 +101,27 @@ def index():
 def protected():
 	return render_template("protected.html", username=session['name'])
 
+
 @app.route("/post", endpoint='post')
 @login_is_required
 def post():
 	return render_template("post.html")
 
-@app.route("/browse", endpoint='browse')
+
+@app.route("/browse", endpoint='browse', methods=["GET", "POST"])
 @login_is_required
 def browse():
-	return render_template("browse.html")
+	if request.method == "POST":
+		post = Post(username=session['name'],
+		            title=request.form["title"],
+		            subject=request.form["subject"],
+		            grade=request.form["grade"],
+		            status=0)
+		db.session.add(post)
+		db.session.commit()
+	posts = db.session.execute(db.select(Post).order_by(Post.id)).scalars()
+	return render_template("browse.html", posts=posts)
+
 
 if __name__ == '__main__':
-    app.run(port=8040, host='0.0.0.0', debug=False)
+	app.run(port=8040, host='0.0.0.0', debug=False)
