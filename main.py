@@ -121,5 +121,6 @@ def browse():
 	posts = db.session.execute(db.select(Post).order_by(Post.id)).scalars()
 	return render_template("browse.html", posts=posts)
 
+
 if __name__ == '__main__':
 	app.run(port=8040, host='0.0.0.0', debug=False)

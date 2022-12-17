@@ -37,15 +37,6 @@
 					<div>grade: {{ p.grade }}</div>
 				</div>
 			{% endfor %}
-		<div>
-			{% for p in posts %}
-				<div>name: {{ p.username }}</div>
-				<div>title: {{ p.title }}</div>
-				<div>subject: {{ p.subject }}</div>
-				<div>grade: {{ p.grade }}</div>
-			{% endfor %}
-		</div>
-
 	</div>
 
 	<script src="{{url_for('static', filename='script.js')}}"></script>
