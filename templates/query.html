@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>【書愛流動】瀏覽</title>
+	<title>【書愛流動】搜尋</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -20,27 +20,35 @@
 			<a href="#">Feedback</a>
 		</div>
 	</div>
-
 	<div class="banner_container">
         <img src="{{ url_for('static', filename='images/banner.png') }}" alt="banner">
     </div>
 
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
-		<a href="/post"><button class="post-button">+</button></a>
-		
-			{% for p in posts %}
+		<form action='/query' method="post" class="post-form">
+			<div>
+				<label for="subject" class="post-label">科目:</label>
+				<select name="subject" class="post-input">
+					<option value="國文">國文</option>
+					<option value="英文">英文</option>
+					<option value="數學">數學</option>
+				</select>
+			</div>
+			<input type="submit" value="搜尋">
+		</form>
+
+			{% for r in results %}
 				<div class="post-container">
-					<div>name: {{ p.user }}</div>
-					<div>title: {{ p.title }}</div>
-					<div>subject: {{ p.subject }}</div>
-					<div>grade: {{ p.grade }}</div>
-					<div>time: {{ p.time }}</div>
-					<button class="get-book">換書</button>
+					<div>name: {{ r[1] }}</div>
+					<div>subject: {{ r[3] }}</div>
+					<div>
+					<button class="get-or-give">捐書</button>
+					<button class="get-or-give">取書</button>
+					</div>
 				</div>
 			{% endfor %}
 	</div>
-
 	<script src="{{url_for('static', filename='script.js')}}"></script>
 
 </body>

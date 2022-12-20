@@ -40,6 +40,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+	flex-wrap: wrap;
 }
 
 .sidebar {
@@ -141,20 +142,35 @@ button, input[type="submit"] {
 }
 
 .post-container {
+	padding: 15px;
+	margin: 10px;
 	width: 75%;
-	padding: 10px;
-	margin: 10px 0;
 	border-radius: 5px;
-	background: var(--wh);
-	color: var(--br);
+	background: var(--brDark);
+	color: var(--wh);
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: flex-start;
 }
 
+.get-or-give {
+	background: var(--wh);
+	color: var(--brDark);
+	align-self: center;
+	margin: 15px 10px 0 0;
+}
 
 @media (min-width: 720px) {
 .description {
 	font-size: 14.4px;
 	padding: 0 36px;
 }
+/*
+.post-container {
+	width: 200px;
+}
+*/	
 }
 
 @media (min-width: 960px) {
