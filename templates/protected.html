@@ -26,7 +26,8 @@
 
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
-		<div>{{ username }}的個人主頁</div>
+		<div>{{ user[0] }}的個人主頁</div>
+		<div>取書紀錄: {{ user[5] }}</div>
 
 	</div>
 	<script src="{{url_for('static', filename='script.js')}}"></script>

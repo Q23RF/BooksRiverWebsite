@@ -31,8 +31,12 @@
 			<div class="post-text">
 				<div>user: {{ r[1] }}</div>
 				<div>description: {{ r[2] }}</div>
-				<div>time: {{ r[3] }}</div>
+				<div>time: {{ r[5] }}</div>
 			</div>
+			<form action='/getCallback' method="post">
+				<input type="hidden" name="time" value={{ r[3] }}>
+				<input type="submit" class="brown-button" value="我要取書">
+			</form>
 		</div>
 		{% endfor %}
 	</div>

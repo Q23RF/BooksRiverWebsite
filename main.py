@@ -67,11 +67,12 @@ def callback():
 	session["google_id"] = id_info.get("sub")
 	session["name"] = id_info.get("name")
 	try:
-		data = [(session["name"], id_info.get("email"), 0, "none", "none")]
-		cur.executemany("INSERT INTO users VALUES(?, ?, ?, ?, ?)", data)
+		data = [(session["name"], id_info.get("email"), session["google_id"], 0, "", "")]
+		cur.executemany("INSERT INTO users VALUES(?, ?, ?, ?, ?,?)", data)
 		con.commit()
+		print("new user:"+session["google_id"])
 	except:
-		print("old user:"+id_info.get("email"))
+		print("old user:"+session["google_id"])
 	return redirect("/query")
 
 
@@ -89,14 +90,10 @@ def index():
 @app.route("/protected", endpoint='protected', methods=["GET", "POST"])
 @login_is_required
 def protected():
-	if request.method == "POST":
-		id = request.form["id"]
-		description = request.form["description"]
-		data = [(id, session["name"], description, time.ctime(), 0)]
-		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?)", data)
-		con.commit()
-		print(id, "捐贈成功!")
-	return render_template("protected.html", username=session['name'])
+	google_id = session['google_id']
+	q = cur.execute(f"SELECT * FROM users WHERE google_id={google_id}")
+	user = q.fetchone()
+	return render_template("protected.html", user=user)
 
 
 @app.route("/query", endpoint='query', methods=["GET", "POST"])
@@ -145,5 +142,36 @@ def get():
 		return render_template("get.html", results=results)
 	else:
 		return redirect("/query")
+
+@app.route("/giveCallback", endpoint='giveCallback', methods=["GET", "POST"])
+@login_is_required
+def giveCallback():
+	if request.method == "POST":
+		id = request.form["id"]
+		description = request.form["description"]
+		data = [(id, session["google_id"], description, time.time(), 0, time.ctime())]
+		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?)", data)
+		con.commit()
+		print(id, "捐贈成功!")
+		flash("捐贈成功!")
+	return redirect("/query")
+
+
+@app.route("/getCallback", endpoint='getCallback', methods=["GET", "POST"])
+@login_is_required
+def getCallback():
+	if request.method == "POST":
+		time = request.form["time"]
+		google_id = session["google_id"]
+		user = cur.execute(f"SELECT * FROM users WHERE google_id={google_id}")
+		current_gets = user.fetchone()[4]
+		current_gets += str(time)+','
+		print(f"UPDATE users SET gets = '{current_gets}' WHERE google_id={google_id};")
+		cur.execute(f"UPDATE users SET gets = '{current_gets}' WHERE google_id = {google_id};")
+		cur.execute(f"UPDATE posts SET status = 1 WHERE time={time};")
+		con.commit()
+	return redirect("/query")
+
+
 if __name__ == '__main__':
 	app.run(port=8040, host='0.0.0.0', debug=False)
