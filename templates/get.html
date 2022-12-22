@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>【書愛流動】發布貼文</title>
+	<title>【書愛流動】取書</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -26,31 +26,15 @@
 
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
-		<form action='/browse' method="post" class="post-form">
-			<div>
-				<label for="title" class="post-label">書名:</label>
-				<input type="text" name="title" class="post-input">				
+		{% for r in results %}
+		<div class="post-container">
+			<div class="post-text">
+				<div>user: {{ r[1] }}</div>
+				<div>description: {{ r[2] }}</div>
+				<div>time: {{ r[3] }}</div>
 			</div>
-			<div>
-				<label for="subject" class="post-label">科目:</label>
-				<select name="subject" class="post-input">
-					<option value="chinese">國文</option>
-					<option value="english">英文</option>
-					<option value="math">數學</option>
-				</select>
-			</div>
-			<div>
-				<label for="grade" class="post-label">年級:</label>
-				<select name="grade" class="post-input">
-					<option value=7>國一</option>
-					<option value=8>國二</option>
-					<option value=9>國三</option>
-				</select>
-			</div>
-
-			<input type="submit" value="Post">
-
-		</form>
+		</div>
+		{% endfor %}
 	</div>
 	<script src="{{url_for('static', filename='script.js')}}"></script>
 

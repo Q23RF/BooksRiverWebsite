@@ -26,25 +26,69 @@
 
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
-		<form action='/query' method="post" class="post-form">
+		<form action='/query' method="post" class="query-form">
 			<div>
-				<label for="subject" class="post-label">科目:</label>
-				<select name="subject" class="post-input">
+				<label for="exam" class="query-label">考試:</label>
+				<select name="exam" class="query-input">
+					<option value="全部">全部</option>
+					<option value="學測">學測</option>
+					<option value="指考">指考</option>
+					<option value="會考">會考</option>
+					<option value="段考">段考</option>
+					<option value="多益">多益</option>
+					<option value="英檢">數學</option>
+				</select>
+			</div>
+			<div>
+				<label for="subject" class="query-label">科目:</label>
+				<select name="subject" class="query-input">
+					<option value="全部">全部</option>
 					<option value="國文">國文</option>
 					<option value="英文">英文</option>
 					<option value="數學">數學</option>
+					<option value="自然">自然</option>
+					<option value="物理">物理</option>
+					<option value="化學">化學</option>
+					<option value="生物">生物</option>
+					<option value="歷史">歷史</option>
+					<option value="地理">地理</option>
+					<option value="公民">公民</option>
 				</select>
 			</div>
-			<input type="submit" value="搜尋">
+			<div>
+				<label for="category" class="query-label">類別:</label>
+				<select name="category" class="query-input">
+					<option value="全部">全部</option>
+					<option value="工具書">工具書</option>
+					<option value="題庫">題庫</option>
+					<option value="地毯式複習講義">地毯式複習講義</option>
+					<option value="周計畫">周計畫</option>
+					<option value="模擬題本">模擬題本</option>
+					<option value="歷屆試題">歷屆試題</option>
+					<option value="閱讀測驗/克漏字">閱讀測驗/克漏字</option>
+				</select>
+			</div>
+			<input type="submit" class="brown-button" value="搜尋">
 		</form>
 
 			{% for r in results %}
 				<div class="post-container">
-					<div>name: {{ r[1] }}</div>
-					<div>subject: {{ r[3] }}</div>
+					<div class="post-text">
+						<div>name: {{ r[1] }}</div>
+						<div>exam: {{ r[2] }}</div>
+						<div>subject: {{ r[3] }}</div>
+						<div>category: {{ r[4] }}</div>
+					</div>
 					<div>
-					<button class="get-or-give">捐書</button>
-					<button class="get-or-give">取書</button>
+						<form action='/give' method="post">
+							<input type="hidden" name="id" value={{ r[0] }}>
+							<input type="submit" class="brown-button" value="我要捐書">
+						</form>
+						<form action='/get' method="post">
+							<input type="hidden" name="id" value={{ r[0] }}>
+							<input type="submit" class="brown-button" value="我要取書">
+						</form>
+						<a href="https://study-guides.dstw.dev/detail.php?id={{ r[0] }}" target="_blank"><button class="brown-button">看看評價</button></a>
 					</div>
 				</div>
 			{% endfor %}

@@ -1,7 +1,7 @@
 import os
 import requests
 import time
-from flask import Flask, session, abort, redirect, request, render_template
+from flask import Flask, session, abort, redirect, request, render_template, flash
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
@@ -66,7 +66,13 @@ def callback():
 
 	session["google_id"] = id_info.get("sub")
 	session["name"] = id_info.get("name")
-	return redirect("/browse")
+	try:
+		data = [(session["name"], id_info.get("email"), 0, "none", "none")]
+		cur.executemany("INSERT INTO users VALUES(?, ?, ?, ?, ?)", data)
+		con.commit()
+	except:
+		print("old user:"+id_info.get("email"))
+	return redirect("/query")
 
 
 @app.route("/logout")
@@ -80,9 +86,16 @@ def index():
 	return render_template("index.html")
 
 
-@app.route("/protected", endpoint='protected')
+@app.route("/protected", endpoint='protected', methods=["GET", "POST"])
 @login_is_required
 def protected():
+	if request.method == "POST":
+		id = request.form["id"]
+		description = request.form["description"]
+		data = [(id, session["name"], description, time.ctime(), 0)]
+		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?)", data)
+		con.commit()
+		print(id, "捐贈成功!")
 	return render_template("protected.html", username=session['name'])
 
 
@@ -90,32 +103,47 @@ def protected():
 @login_is_required
 def query():
 	if request.method == "POST":
-		target_subject = request.form["subject"]
-		q = cur.execute(f"SELECT * FROM books WHERE subject='{target_subject}'")
+		sql = "SELECT * FROM books WHERE "
+		constraints = []
+		exam = request.form["exam"]
+		subject = request.form["subject"]
+		category = request.form["category"]
+		if exam != "全部":
+			constraints.append("exam='"+exam+"'")
+		if subject != "全部":
+			constraints.append("subject='"+subject+"'")
+		if category != "全部":
+			constraints.append("category='"+category+"'")
+
+		if len(constraints)>0:
+			sql += " AND ".join(constraints)
+		else:
+			sql += "LENGTH(name)>0"
+		print(sql)
+		q = cur.execute(sql)
 		results = q.fetchall()
 		return render_template("query.html", results=results)
 	else:
 		return render_template("query.html")
 
-@app.route("/post", endpoint='post', methods=["GET", "POST"])
+@app.route("/give", endpoint='give', methods=["GET", "POST"])
 @login_is_required
-def post():
+def give():
 	if request.method == "POST":
-		return render_template("post.html", book=request.form["book"])
+		id = request.form["id"]
+		return render_template("give.html", id=id)
+	else:
+		return redirect("/query")
 
-@app.route("/browse", endpoint='browse', methods=["GET", "POST"])
+@app.route("/get", endpoint='get', methods=["GET", "POST"])
 @login_is_required
-def browse():
+def get():
 	if request.method == "POST":
-		data = [request.form["book"],
-				(session['name'],
-				str(time.ctime()),
-		        0)]
-		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?)", data)
-		con.commit()
-
-	return render_template("browse.html", posts=posts)
-
-
+		id = request.form["id"]
+		q = cur.execute(f"SELECT * FROM posts WHERE book_id='{id}' AND status=0")
+		results = q.fetchall()
+		return render_template("get.html", results=results)
+	else:
+		return redirect("/query")
 if __name__ == '__main__':
 	app.run(port=8040, host='0.0.0.0', debug=False)

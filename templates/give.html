@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>【書愛流動】瀏覽</title>
+	<title>【書愛流動】捐書</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -20,27 +20,23 @@
 			<a href="#">Feedback</a>
 		</div>
 	</div>
-
 	<div class="banner_container">
         <img src="{{ url_for('static', filename='images/banner.png') }}" alt="banner">
     </div>
 
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
-		<a href="/post"><button class="post-button">+</button></a>
-		
-			{% for p in posts %}
-				<div class="post-container">
-					<div>name: {{ p.user }}</div>
-					<div>title: {{ p.title }}</div>
-					<div>subject: {{ p.subject }}</div>
-					<div>grade: {{ p.grade }}</div>
-					<div>time: {{ p.time }}</div>
-					<button class="get-book">換書</button>
-				</div>
-			{% endfor %}
-	</div>
+		<form action='/protected' method="post" class="query-form">
+			<div>
+				<div><label for="description" class="query-label">書況說明:</label></div>
+				<textarea name="description" class="query-input"></textarea>
+			</div>
 
+			<input type="hidden" name="id" value={{ id }}>
+			<input type="submit" class="brown-button" value="Post">
+
+		</form>
+	</div>
 	<script src="{{url_for('static', filename='script.js')}}"></script>
 
 </body>
