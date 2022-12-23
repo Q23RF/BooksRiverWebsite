@@ -31,7 +31,7 @@ def parse_more(current):
 		tags = result.find("p").get_text().split(" / ")
 		if len(name)>0:
 			data = [(current, name, tags[0], tags[1], tags[2], 0)]
-			cur.executemany("INSERT INTO books VALUES(?, ?, ?, ?, ?)", data)
+			cur.executemany("INSERT INTO books VALUES(?, ?, ?, ?, ?, ?)", data)
 			con.commit()
 		else:
 			empty_count += 1
@@ -139,9 +139,6 @@ def protected():
 @login_is_required
 def query():
 	if request.method == "POST":
-		count = cur.execute("SELECT count(*) FROM books")
-		current_count = count.fetchone()[0]
-		parse_more(current_count)
 		sql = "SELECT * FROM books WHERE "
 		constraints = []
 		exam = request.form["exam"]
@@ -240,6 +237,26 @@ def getCallback():
 		else:
 			return render_template("getCallback.html")
 
+@app.route("/newBook", endpoint='newBook')
+@login_is_required
+def newBook():
+	#return render_template("newBook.html")
+	return "施工中..."
+
+@app.route("/sync", endpoint='sync', methods=["GET", "POST"])
+@login_is_required
+def sync():
+	if request.method == "POST":
+		#r = requests.post("https://study-guides.dstw.dev/newBook.php", data=request.form)
+		#print(request.form["bookname"], r.status_code)
+		print(request.form["bookname"])
+		count = cur.execute("SELECT count(*) FROM books")
+		current_count = count.fetchone()[0]
+		parse_more(current_count)
+		return redirect("/query")
+	else:
+		return redirect("/query")
+	
 
 if __name__ == '__main__':
-	app.run(port=8040, host='0.0.0.0', debug=False)
+	app.run(port=8000, host='0.0.0.0', debug=False)

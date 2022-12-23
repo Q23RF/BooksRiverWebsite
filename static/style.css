@@ -63,7 +63,7 @@ body{
     align-items: flex-start;
 }
 
-.sidebar-container a {
+a {
 	color: #FFFFFF;
 }
 
@@ -82,7 +82,7 @@ body{
 	margin-bottom: 30px;
 	width: 100%;
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-evenly;
 }
 
 .sidebar-bottom a {
@@ -109,7 +109,7 @@ body{
 }
 
 .description {
-	padding: 0 min(5vw, 36px);
+	width: 75%;
 	text-align: center;
 }
 
@@ -147,8 +147,12 @@ button, input[type="submit"] {
 	color: var(--brDark);
 	border-radius: 5px;
 	border: none;
-
 }
+
+.query-input.three{
+	width: 57.5vw;
+}
+
 
 .post-container {
 	padding: 15px;
@@ -184,11 +188,13 @@ button, input[type="submit"] {
 	color: var(--wh);
 }
 
-
+@media (min-width: 720px) {
+.query-input.three{
+	width: calc(60vw - 18px);
+}
+}
 
 @media (min-width: 960px) {
-
-
 .icons {
     background: url("/static/images/2.png") no-repeat;
 	background-size: 100vw auto;
@@ -198,4 +204,7 @@ button, input[type="submit"] {
 	width: 576px;
 }
 
+.query-input.three{
+	width: 558px;
+}
 }

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>【書愛流動】新增書籍</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/68144b1df7.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<!-- Sidebar -->
+	<div class="sidebar" style="display:none" id="sidebar">
+		<div class="sidebar-container">
+	  		<button class="close" onclick="sclose()">&times;</button>
+			<a class="sidebar-nav" href="/protected">Home</a>
+			<a class="sidebar-nav" href="/query">Search</a>
+			<a class="sidebar-nav" href="#">Feedback</a>
+			<div class="sidebar-bottom">
+				<a href="https://linktr.ee/booksriver" target="_blank"><i class="fa-solid fa-link"></i></a>
+				<a href="https://www.instagram.com/booksriver_2022/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+				<a href="mailto:booksriver.noreply@gmail.com"><i class="fa-regular fa-envelope"></i></a>
+			</div>
+		</div>
+	</div>
+	<div class="banner_container">
+        <img src="{{ url_for('static', filename='images/banner.png') }}" alt="banner">
+    </div>
+
+	<div class="container">
+  		<button class="open" onclick="sopen()">〉</button>
+		<h2 style="font-weight: normal;">新增參考書</h2>
+        <form action="/sync" method="post" class="query-form">
+			<div>
+            <label class="query-label">科目：</label>
+            <select class="query-input" name="subject">
+                <option value="國文">國文</option>
+                <option value="數學">數學</option>
+                <option value="英文">英文</option>
+                <option value="物理">物理</option>
+                <option value="化學">化學</option>
+                <option value="地科">地科</option>
+                <option value="生物">生物</option>
+                <option value="自然">自然</option>
+                <option value="歷史">歷史</option>
+                <option value="地理">地理</option>
+                <option value="公民">公民</option>
+                <option value="社會">社會</option>
+                <option value="其他">其他</option>
+            </select>
+			</div>
+            <div>
+                <label for="bookname" class="query-label">書名：</label>
+                <input class="query-input" type="text" name="name" id="bookname">
+            </div>
+			<div>
+            <label class="query-label">考試：</label>
+            <select class="query-input" name="exam">
+                <option value="學測">學測</option>
+                <option value="分科測驗">分科測驗</option>
+                <option value="全民英檢">全民英檢</option>
+                <option value="多益">多益</option>
+                <option value="段考">段考</option>
+                <option value="其他">其他</option>
+            </select>
+
+			</div>
+			<div>
+            <label class="query-label">類別：</label>
+            <select class="query-input" name="category">
+                <option value="工具書">工具書</option>
+                <option value="閱讀測驗/克漏字">閱讀測驗/克漏字</option>
+                <option value="寫作">寫作</option>
+                <option value="翻譯">翻譯</option>
+                <option value="地毯式複習講義">地毯式複習講義</option>
+                <option value="周計畫">周計畫</option>
+                <option value="題庫">題庫</option>
+                <option value="模擬題本">模擬題本</option>
+                <option value="歷屆試題">歷屆模考題</option>
+                <option value="歷屆試題">歷屆試題</option>
+                <option value="其他">其他</option>
+            </select>
+
+			</div>
+			<div>
+            <label class="query-label">出版社：</label>
+            <select class="query-input three" name="publisher">
+                <option value="龍騰">龍騰</option>
+                <option value="翰林">翰林</option>
+                <option value="南一">南一</option>
+                <option value="全華">全華</option>
+                <option value="康熹">康熹</option>
+                <option value="晟景">晟景</option>
+                <option value="泰宇">泰宇</option>
+                <option value="三民">三民</option>
+                <option value="華逵">華逵</option>
+                <option value="康寧泰順書坊">康寧泰順書坊</option>
+                <option value="LiveABC">LiveABC</option>
+                <option value="AMC">AMC</option>
+                <option value="常春藤">常春藤</option>
+                <option value="其他">其他</option>
+            </select>
+
+			</div>
+            <div>
+            <label for="formFile"  class="query-label">封面：</label>
+            <input type="file" class="query-input" name="picture" id="formFile" accept="image/*">
+			</div>
+
+            <script>
+                var file = document.getElementById('formFile');
+
+                file.onchange = function(e) {
+                    var ext = this.value.match(/\.([^\.]+)$/)[1];
+                    switch (ext) {
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'bmp':
+                        case 'png':
+                        case 'tif':
+                            break;
+                        default:
+                            alert('叫你上傳圖片是不是聽不懂人話?');
+                            this.value = '';
+                    }
+                };
+            </script>
+            <input type="submit" class="brown-button">
+        </form>
+	</div>
+	<script src="{{url_for('static', filename='script.js')}}"></script>
+
+</body>
+</html>

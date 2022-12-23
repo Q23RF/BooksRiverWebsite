@@ -78,7 +78,6 @@
 			</div>
 			<input type="submit" class="brown-button" value="搜尋">
 		</form>
-
 			{% for r in results %}
 				<div class="post-container">
 					<div class="post-text">
@@ -101,6 +100,10 @@
 					</div>
 				</div>
 			{% endfor %}
+		
+		<div style="margin: 10px 0 50px 0;">找不到想要的書？
+			<a href="/newBook" class="">去新增</a>
+		</div>
 	</div>
 	<script src="{{url_for('static', filename='script.js')}}"></script>
 
