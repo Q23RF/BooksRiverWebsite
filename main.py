@@ -1,21 +1,41 @@
 import os
 import requests
 import time
-from flask import Flask, session, abort, redirect, request, render_template, flash
+from flask import Flask, session, abort, redirect, request, render_template
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
-
+from bs4 import BeautifulSoup
+from urllib import request as rq
 app = Flask('BooksRiver')
 app.secret_key = os.environ['SECRET_KEY']
 
 import sqlite3
 con = sqlite3.connect("instance/info.db", check_same_thread=False)
 cur = con.cursor()
-res = cur.execute("SELECT name FROM sqlite_master")
-print(res.fetchall())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
+#與參考書推薦平台同步
+def parse_more(current):
+	url = "https://study-guides.dstw.dev/detail.php?id="
+	hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'}
+	empty_count = 0
+	while empty_count<3:
+		req = rq.Request(url+str(current), headers=hdr)
+		page = rq.urlopen(req)
+		content = page.read()
+		soup = BeautifulSoup(content, 'html.parser')
+		result = soup.find("div", {"class": "name_rating"})
+		name = result.find("h2").get_text()
+		tags = result.find("p").get_text().split(" / ")
+		if len(name)>0:
+			data = [(current, name, tags[0], tags[1], tags[2], 0)]
+			cur.executemany("INSERT INTO books VALUES(?, ?, ?, ?, ?)", data)
+			con.commit()
+		else:
+			empty_count += 1
+		current += 1
 
 client_secrets_file = "client_secret.json"
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
@@ -37,8 +57,8 @@ def login_is_required(function):
 		else:
 			return function()
 
-	#wrapper.__name__ = func.__name__
 	return wrapper
+
 
 
 @app.route("/login")
@@ -70,9 +90,8 @@ def callback():
 		data = [(session["name"], id_info.get("email"), session["google_id"], 0)]
 		cur.executemany("INSERT INTO users VALUES(?, ?, ?, ?)", data)
 		con.commit()
-		print("new user:"+session["google_id"])
-	except:
-		print("old user:"+session["google_id"])
+	except: # old user
+		pass
 	return redirect("/query")
 
 
@@ -120,6 +139,9 @@ def protected():
 @login_is_required
 def query():
 	if request.method == "POST":
+		count = cur.execute("SELECT count(*) FROM books")
+		current_count = count.fetchone()[0]
+		parse_more(current_count)
 		sql = "SELECT * FROM books WHERE "
 		constraints = []
 		exam = request.form["exam"]
@@ -136,7 +158,6 @@ def query():
 			sql += " AND ".join(constraints)
 		else:
 			sql += "LENGTH(name)>0"
-		print(sql)
 		q = cur.execute(sql)
 		results = q.fetchall()
 		return render_template("query.html", results=results)
@@ -182,8 +203,6 @@ def giveCallback():
 		cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={id}")
 		cur.execute(f"UPDATE users SET coins=coins+10 WHERE google_id={session['google_id']}")
 		con.commit()
-		print(id, "捐贈成功!")
-		flash("捐贈成功!")
 	return redirect("/query")
 
 
