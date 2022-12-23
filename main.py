@@ -67,8 +67,8 @@ def callback():
 	session["google_id"] = id_info.get("sub")
 	session["name"] = id_info.get("name")
 	try:
-		data = [(session["name"], id_info.get("email"), session["google_id"], 0, "", "")]
-		cur.executemany("INSERT INTO users VALUES(?, ?, ?, ?, ?,?)", data)
+		data = [(session["name"], id_info.get("email"), session["google_id"], 0)]
+		cur.executemany("INSERT INTO users VALUES(?, ?, ?, ?)", data)
 		con.commit()
 		print("new user:"+session["google_id"])
 	except:
@@ -90,10 +90,29 @@ def index():
 @app.route("/protected", endpoint='protected', methods=["GET", "POST"])
 @login_is_required
 def protected():
+	if request.method == "POST":	#已領取
+		post_id = request.form["id"]
+		cur.execute(f"UPDATE gets SET status=2 WHERE post_id={post_id}")
+		con.commit()
+
 	google_id = session['google_id']
-	q = cur.execute(f"SELECT * FROM users WHERE google_id={google_id}")
-	user = q.fetchone()
-	return render_template("protected.html", user=user)
+	user_query = cur.execute(f"SELECT * FROM users WHERE google_id={google_id}")
+	user = user_query.fetchone()
+	gets_query = cur.execute(f"SELECT * FROM gets WHERE getter_id={google_id} AND status=0")
+	gets = gets_query.fetchall()
+	give_query = cur.execute(f"SELECT * FROM posts WHERE user_id={google_id}")
+	gives = give_query.fetchall()
+	if len(gets)>0:
+		if len(gives)>0:
+			return render_template("protected.html", user=user, gets=gets, gives=gives)
+		else:
+			return render_template("protected.html", user=user, gets=gets, no_gives="暫無捐書紀錄")
+	else:
+		if len(gives)>0:
+			return render_template("protected.html", user=user, no_gets="暫無取書紀錄", gives=gives)
+		else:
+			return render_template("protected.html", user=user, no_gets="暫無取書紀錄", no_gives="暫無捐書紀錄")
+
 
 
 @app.route("/query", endpoint='query', methods=["GET", "POST"])
@@ -139,7 +158,12 @@ def get():
 		id = request.form["id"]
 		q = cur.execute(f"SELECT * FROM posts WHERE book_id='{id}' AND status=0")
 		results = q.fetchall()
-		return render_template("get.html", results=results)
+		if len(results)>0:
+			return render_template("get.html", results=results)
+		else:
+			empty = "暫時沒有人捐贈這本書..."
+			return render_template("get.html", empty=empty)
+			
 	else:
 		return redirect("/query")
 
@@ -149,8 +173,13 @@ def giveCallback():
 	if request.method == "POST":
 		id = request.form["id"]
 		description = request.form["description"]
-		data = [(id, session["google_id"], description, time.time(), 0, time.ctime())]
-		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?)", data)
+		book_query = cur.execute(f"SELECT * FROM books WHERE id_inherited={id}")
+		book = book_query.fetchone()
+		book_name = book[1]
+		data = [(id, book_name, session["google_id"], session["name"], description, time.time(), 0, time.ctime())]
+		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?)", data)
+		cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={id}")
+		cur.execute(f"UPDATE users SET coins=coins+10 WHERE google_id={session['google_id']}")
 		con.commit()
 		print(id, "捐贈成功!")
 		flash("捐贈成功!")
@@ -162,15 +191,34 @@ def giveCallback():
 def getCallback():
 	if request.method == "POST":
 		time = request.form["time"]
-		google_id = session["google_id"]
-		user = cur.execute(f"SELECT * FROM users WHERE google_id={google_id}")
-		current_gets = user.fetchone()[4]
-		current_gets += str(time)+','
-		print(f"UPDATE users SET gets = '{current_gets}' WHERE google_id={google_id};")
-		cur.execute(f"UPDATE users SET gets = '{current_gets}' WHERE google_id = {google_id};")
-		cur.execute(f"UPDATE posts SET status = 1 WHERE time={time};")
-		con.commit()
-	return redirect("/query")
+		getter_id = session["google_id"]
+		post_query = cur.execute(f"SELECT * FROM posts WHERE time={time}")
+		post = post_query.fetchone()
+		book_id = post[0]
+		giver_id = post[2]
+		description = post[4]
+
+		book_query = cur.execute(f"SELECT * FROM books WHERE id_inherited={book_id}")
+		book = book_query.fetchone()
+		book_name = book[1]
+
+		giver_query = cur.execute(f"SELECT * FROM users WHERE google_id={giver_id}")
+		giver = giver_query.fetchone()
+		giver_name = giver[0]
+
+		getter_query = cur.execute(f"SELECT * FROM users WHERE google_id={getter_id}")
+		getter = getter_query.fetchone()
+		getter_coins = getter[3]
+		if getter_coins>=10:
+			cur.execute(f"INSERT INTO gets VALUES ('{giver_name}', '{book_name}', '{description}', {time}, {getter_id}, {giver_id}, 0)")
+			cur.execute(f"UPDATE posts SET status = 1 WHERE time={time};")
+			cur.execute(f"UPDATE books SET quantity = quantity-1 WHERE id_inherited={book_id};")
+			
+			cur.execute(f"UPDATE users SET coins = coins-10 WHERE google_id={getter_id};")
+			con.commit()
+		else:
+			flash("愛心幣不足......")
+	return redirect("/protected")
 
 
 if __name__ == '__main__':
