@@ -32,16 +32,9 @@
 
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
-		<form action='/giveCallback' method="post" class="query-form">
-			<div>
-				<div><label for="description" class="query-label">書況說明:</label></div>
-				<textarea name="description" class="query-input"></textarea>
-			</div>
+		<div>您的愛心幣不足......</div>
+		<a href="/query"><button class="brown-button">去捐書</button></a>
 
-			<input type="hidden" name="id" value={{ id }}>
-			<input type="submit" class="brown-button" value="Post">
-
-		</form>
 	</div>
 	<script src="{{url_for('static', filename='script.js')}}"></script>
 

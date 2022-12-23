@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 	<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/68144b1df7.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -17,9 +18,14 @@
 	<div class="sidebar" style="display:none" id="sidebar">
 		<div class="sidebar-container">
 	  		<button class="close" onclick="sclose()">&times;</button>
-			<a href="/protected">Home</a>
-			<a href="/query">Search</a>
-			<a href="#">Feedback</a>
+			<a class="sidebar-nav" href="/protected">Home</a>
+			<a class="sidebar-nav" href="/query">Search</a>
+			<a class="sidebar-nav" href="#">Feedback</a>
+			<div class="sidebar-bottom">
+				<a href="https://linktr.ee/booksriver" target="_blank"><i class="fa-solid fa-link"></i></a>
+				<a href="https://www.instagram.com/booksriver_2022/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+				<a href="mailto:booksriver.noreply@gmail.com"><i class="fa-regular fa-envelope"></i></a>
+			</div>
 		</div>
 	</div>
 	<div class="banner_container">
@@ -30,7 +36,7 @@
   		<button class="open" onclick="sopen()">〉</button>
 		<h2>{{ user[0] }}</h2>
 		<div>愛心幣: {{ user[3] }}</div>
-		<div style="margin-top: 8px;">未領取的書籍:</div>
+		<div style="margin-top: 10px;">未領取的書籍:</div>
 		<div>{{ no_gets }}</div>
 		{% for g in gets %}
 		<div class="post-container">
@@ -41,18 +47,18 @@
 			</div>
 			<form action="/protected" method="post">
 				<input name="id" type="hidden" value={{ g[3] }}>
-				<input type="submit" class="brown-button" value="已領取">
+				<input type="submit" class="brown-button" value="確認領取">
 			</form>
 		</div>
 		{% endfor %}
 
-		<div style="margin-top: 8px;">已捐贈的書籍:</div>
+		<div style="margin-top: 10px;">已捐贈的書籍:</div>
 		<div>{{ no_gives }}</div>
 		{% for g in gives %}
 		<div class="post-container">
 			<div class="post-text">
-				<div>書名: {{ g[1] }}</div>
-				<div>狀態(先寫status code晚點改): {{ g[6] }}</div>
+				<div>捐贈書籍: {{ g[1] }}</div>
+				<div>捐贈時間: {{ g[7] }}</div>
 			</div>
 		</div>
 		{% endfor %}

@@ -13,7 +13,7 @@
 
 body{
     font-family: 'Noto Sans TC', Arial, sans-serif;
-	font-size: 14px;
+	font-size: min(2.5vw, 18px);
 	color: var(--wh);
     background-color: var(--br);
     width: auto;
@@ -53,10 +53,10 @@ body{
 	left: 0;
 	background-color: var(--brDark);
 	overflow-x: hidden;
-
 }
 
 .sidebar-container {
+	height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -65,13 +65,28 @@ body{
 
 .sidebar-container a {
 	color: #FFFFFF;
-	font-size: 3.5vw;
+}
+
+.sidebar-nav {
+	font-size: min(3.5vw, 33px);
 	font-variant: small-caps;
 	padding-left: 2vw;
 	padding-top: 2vh;
 	padding-bottom: 1vh;
 	letter-spacing: 0.1em;
 	text-decoration: none;
+}
+
+.sidebar-bottom {
+	margin-top: auto;
+	margin-bottom: 30px;
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.sidebar-bottom a {
+	font-size: min(2vw, 19.2px);
 }
 
 .open {
@@ -94,8 +109,7 @@ body{
 }
 
 .description {
-	font-size: 2vw;
-	padding: 0 5vw;
+	padding: 0 min(5vw, 36px);
 	text-align: center;
 }
 
@@ -106,8 +120,7 @@ body{
 }
 
 button, input[type="submit"] {
-
-	font-size: 2vw;
+	font-size: min(2.5vw, 18px);
     font-family: 'Noto Sans TC', Arial, sans-serif;
 	border: none;
 	border-radius: 5px;
@@ -128,9 +141,10 @@ button, input[type="submit"] {
 }
 
 .query-input {
+	font-size: min(2.5vw, 18px);
 	margin: 5px 0;
 	width: 60vw;
-	font-size: 2vw;
+	color: var(--brDark);
 	border-radius: 5px;
 	border: none;
 
@@ -153,6 +167,13 @@ button, input[type="submit"] {
 	margin: 7.5px 10px 7.5px 0;
 }
 
+.alert-box {
+	display: none;
+	background: var(--whDark);
+	color: var(--brDark);
+	width: 75%;
+}
+
 .white-button {
 	background: var(--wh);
 	color: var(--brDark);
@@ -163,36 +184,18 @@ button, input[type="submit"] {
 	color: var(--wh);
 }
 
-@media (min-width: 720px) {
-.description {
-	font-size: 14.4px;
-	padding: 0 36px;
-}
-}
+
 
 @media (min-width: 960px) {
 
-.sidebar-container a {
-	font-size: 33px;
-}
 
 .icons {
     background: url("/static/images/2.png") no-repeat;
 	background-size: 100vw auto;
 }
 
-button, input[type="submit"] {
-	font-size: 19.2px;
-}
-
-.query-form {
-	font-size: 19.2px;
-}
-
 .query-input {
 	width: 576px;
-	font-size: 19.2px;
-
 }
-	
+
 }

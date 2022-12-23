@@ -92,7 +92,8 @@ def index():
 def protected():
 	if request.method == "POST":	#已領取
 		post_id = request.form["id"]
-		cur.execute(f"UPDATE gets SET status=2 WHERE post_id={post_id}")
+		cur.execute(f"DELETE FROM gets WHERE post_id={post_id}")
+		cur.execute(f"DELETE FROM posts WHERE time={post_id}")
 		con.commit()
 
 	google_id = session['google_id']
@@ -216,9 +217,9 @@ def getCallback():
 			
 			cur.execute(f"UPDATE users SET coins = coins-10 WHERE google_id={getter_id};")
 			con.commit()
+			return redirect("/protected")
 		else:
-			flash("愛心幣不足......")
-	return redirect("/protected")
+			return render_template("getCallback.html")
 
 
 if __name__ == '__main__':
