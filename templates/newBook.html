@@ -33,10 +33,10 @@
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
 		<h2 style="font-weight: normal;">新增參考書</h2>
-        <form action="/sync" method="post" class="query-form">
+        <form action="https://study-guides.dstw.dev/newBook.php" method="post" class="query-form" enctype="multipart/form-data">
 			<div>
             <label class="query-label">科目：</label>
-            <select class="query-input" name="subject">
+            <select class="query-input" name="subject" required>
                 <option value="國文">國文</option>
                 <option value="數學">數學</option>
                 <option value="英文">英文</option>
@@ -54,11 +54,11 @@
 			</div>
             <div>
                 <label for="bookname" class="query-label">書名：</label>
-                <input class="query-input" type="text" name="name" id="bookname">
+                <input class="query-input" type="text" name="name" id="bookname" required>
             </div>
 			<div>
             <label class="query-label">考試：</label>
-            <select class="query-input" name="exam">
+            <select class="query-input" name="exam" required>
                 <option value="學測">學測</option>
                 <option value="分科測驗">分科測驗</option>
                 <option value="全民英檢">全民英檢</option>
@@ -70,7 +70,7 @@
 			</div>
 			<div>
             <label class="query-label">類別：</label>
-            <select class="query-input" name="category">
+            <select class="query-input" name="category" required>
                 <option value="工具書">工具書</option>
                 <option value="閱讀測驗/克漏字">閱讀測驗/克漏字</option>
                 <option value="寫作">寫作</option>
@@ -87,7 +87,7 @@
 			</div>
 			<div>
             <label class="query-label">出版社：</label>
-            <select class="query-input three" name="publisher">
+            <select class="query-input three" name="publisher" required>
                 <option value="龍騰">龍騰</option>
                 <option value="翰林">翰林</option>
                 <option value="南一">南一</option>
@@ -107,7 +107,7 @@
 			</div>
             <div>
             <label for="formFile"  class="query-label">封面：</label>
-            <input type="file" class="query-input" name="picture" id="formFile" accept="image/*">
+            <input type="file" class="query-input" name="picture" id="formFile" accept="image/*" required>
 			</div>
 
             <script>

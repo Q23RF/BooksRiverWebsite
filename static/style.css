@@ -65,6 +65,7 @@ body{
 
 a {
 	color: #FFFFFF;
+	text-decoration: none;
 }
 
 .sidebar-nav {

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>【書愛流動】新增書籍</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/68144b1df7.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<!-- Sidebar -->
+	<div class="sidebar" style="display:none" id="sidebar">
+		<div class="sidebar-container">
+	  		<button class="close" onclick="sclose()">&times;</button>
+			<a class="sidebar-nav" href="/protected">Home</a>
+			<a class="sidebar-nav" href="/query">Search</a>
+			<a class="sidebar-nav" href="#">Feedback</a>
+			<div class="sidebar-bottom">
+				<a href="https://linktr.ee/booksriver" target="_blank"><i class="fa-solid fa-link"></i></a>
+				<a href="https://www.instagram.com/booksriver_2022/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+				<a href="mailto:booksriver.noreply@gmail.com"><i class="fa-regular fa-envelope"></i></a>
+			</div>
+		</div>
+	</div>
+	<div class="banner_container">
+        <img src="{{ url_for('static', filename='images/banner.png') }}" alt="banner">
+    </div>
+
+	<div class="container">
+  		<button class="open" onclick="sopen()">〉</button>
+		<h2>施工中</h2>
+		<div class="description">站內新書登記功能還在施工中，您可以先去參考書推薦平台登記，我們會在24小時內同步資料。謝謝！</div>
+		<a href="https://study-guides.dstw.dev/newBook.php" target="_blank"><button class="brown-button" onclick="sendLine()">去登記</button></a>
+
+	</div>
+	<script src="{{url_for('static', filename='script.js')}}"></script>
+	<script src="{{url_for('static', filename='jquery-3.6.3.min.js')}}"></script>
+
+</body>
+</html>

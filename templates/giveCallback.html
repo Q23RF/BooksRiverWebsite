@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>【書愛流動】捐贈成功</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/68144b1df7.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<!-- Sidebar -->
+	<div class="sidebar" style="display:none" id="sidebar">
+		<div class="sidebar-container">
+	  		<button class="close" onclick="sclose()">&times;</button>
+			<a class="sidebar-nav" href="/protected">Home</a>
+			<a class="sidebar-nav" href="/query">Search</a>
+			<a class="sidebar-nav" href="#">Feedback</a>
+			<div class="sidebar-bottom">
+				<a href="https://linktr.ee/booksriver" target="_blank"><i class="fa-solid fa-link"></i></a>
+				<a href="https://www.instagram.com/booksriver_2022/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+				<a href="mailto:booksriver.noreply@gmail.com"><i class="fa-regular fa-envelope"></i></a>
+			</div>
+		</div>
+	</div>
+	<div class="banner_container">
+        <img src="{{ url_for('static', filename='images/banner.png') }}" alt="banner">
+    </div>
+
+	<div class="container">
+  		<button class="open" onclick="sopen()">〉</button>
+		<h2>感謝您的捐贈！</h2>
+		<div style="margin-top: 5px;">
+			<a href="/query">
+				<button class="brown-button" style="margin-right: 5px;">繼續瀏覽</button>
+			</a>
+			<a href="https://study-guides.dstw.dev/questionnaire.php?subject={{ subject }}">
+				<button class="brown-button" style="margin-left: 5px;">填寫評價</button>
+			</a>
+		</div>
+
+	</div>
+	<script src="{{url_for('static', filename='script.js')}}"></script>
+
+</body>
+</html>
