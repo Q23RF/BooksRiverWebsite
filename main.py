@@ -207,7 +207,7 @@ def give():
 def get():
 	if request.method == "POST":
 		id = request.form["id"]
-		q = cur.execute(f"SELECT * FROM posts WHERE book_id='{id}' AND status=0")
+		q = cur.execute(f"SELECT * FROM posts WHERE book_id='{id}' AND status=1")
 		results = q.fetchall()
 		if len(results) > 0:
 			return render_template("get.html", results=results)
@@ -232,7 +232,7 @@ def giveCallback():
 		data = [(id, book_name, session["google_id"], session["name"], description,
 		         time.time(), 0, time.ctime())]
 		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?)", data)
-		cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={id}")
+		#cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={id}")
 		cur.execute(
 		 f"UPDATE users SET coins=coins+10 WHERE google_id={session['google_id']}")
 		con.commit()
