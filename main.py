@@ -171,9 +171,12 @@ def query():
 	if request.method == "POST":
 		sql = "SELECT * FROM books WHERE "
 		constraints = []
+		name = request.form["name"]
 		exam = request.form["exam"]
 		subject = request.form["subject"]
 		category = request.form["category"]
+		if name != "":
+			constraints.append("name LIKE'%" + name + "%'")
 		if exam != "全部":
 			constraints.append("exam='" + exam + "'")
 		if subject != "全部":

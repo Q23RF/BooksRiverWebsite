@@ -36,6 +36,11 @@
   		<button class="open" onclick="sopen()">〉</button>
 		<form action='/query' method="post" class="query-form">
 			<div>
+				<label for="name" class="query-label">書名:</label>
+				<input type="text" name="name" class="query-input">
+			</div>
+			
+			<div>
 				<label for="exam" class="query-label">考試:</label>
 				<select name="exam" class="query-input">
 					<option value="全部">全部</option>
@@ -102,7 +107,7 @@
 			{% endfor %}
 		
 		<div style="margin: 10px 0 50px 0;">找不到想要的書？
-			<a href="/newBook" class="">去新增</a>
+			<a href="/newBook">去新增</a>
 		</div>
 	</div>
 	<script src="{{url_for('static', filename='script.js')}}"></script>
