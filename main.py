@@ -337,6 +337,20 @@ def passed():
 	return redirect("/review")
 	
 
+@app.route("/censored", endpoint='censored', methods=["POST"])
+@admin_is_required
+def censored():
+	censored_id = request.form["post_id"]
+	cur.execute(f"UPDATE posts SET status=2 WHERE id={censored_id}")
+	cur.execute(f"UPDATE posts SET description='(不予顯示)' WHERE id={censored_id}")
+	book_query = cur.execute(f"SELECT book_id FROM posts WHERE id={censored_id}")
+	book_id = book_query.fetchone()
+	user_query = cur.execute(f"SELECT user_id FROM posts WHERE id={censored_id}")
+	user_id = user_query.fetchone()
+	cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={book_id}")
+	cur.execute(f"UPDATE users SET coins=coins+10 WHERE google_id={user_id}")
+	con.commit()
+	return redirect("/censored")
 
 if __name__ == '__main__':
 	app.run(port=8000, host='0.0.0.0', debug=False)
