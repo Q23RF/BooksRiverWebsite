@@ -44,6 +44,10 @@
 				<input type="hidden" name="post_id" value= {{ r[5] }}>
 				<input type="submit" class="brown-button" value="通過">
 			</form>
+			<form action='/delete' method="post">
+				<input type="hidden" name="post_id" value= {{ r[5] }}>
+				<input type="submit" class="brown-button" value="刪除">
+			</form>
 		</div>
 		{% endfor %}
 	</div>
