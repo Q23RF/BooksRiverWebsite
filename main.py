@@ -332,6 +332,7 @@ def passed():
 	user_query = cur.execute(f"SELECT user_id FROM posts WHERE id={passed_id}")
 	user_id = user_query.fetchone()
 	cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={book_id}")
+	cur.execute(f"UPDATE users SET coins=coins+10 WHERE google_id={user_id}")
 	con.commit()
 	return redirect("/review")
 	
