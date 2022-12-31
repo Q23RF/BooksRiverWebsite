@@ -1,9 +1,10 @@
+import os
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 
 def send_mail(to, subject, message):
-  password = "wiiphzjcybzxioxa"
+  password = os.environ['EMAIL_PASSWORD']
   mail = MIMEText(message, 'plain', 'utf-8')
   mail['Subject'] = Header(subject, 'utf-8')
 
