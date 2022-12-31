@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>【書愛流動】取書</title>
+	<title>【書愛流動】審核</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -32,9 +32,7 @@
 
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
-  		<div class="alert-box">{{ no_coins }}</div>
-		<div>{{ empty }}</div>
-		{% for r in results %}
+		{% for r in posts %}
 		<div class="post-container">
 			<div class="post-text">
 				<div>捐書人: {{ r[3] }}</div>
@@ -42,9 +40,9 @@
 				<div>捐贈時間: {{ r[7] }}</div>
 				<div>捐書碼: {{ r[5] }}</div>
 			</div>
-			<form action='/getCallback' method="post">
+			<form action='/passed' method="post">
 				<input type="hidden" name="post_id" value= {{ r[5] }}>
-				<input type="submit" class="brown-button" value="以愛心幣兌換">
+				<input type="submit" class="brown-button" value="通過">
 			</form>
 		</div>
 		{% endfor %}

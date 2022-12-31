@@ -34,14 +34,16 @@
   		<button class="open" onclick="sopen()">〉</button>
 		<form class="query-form" action="/delete" method="post">
 			<div>
-				<label for="id" class="queryu-label">刪除貼文:</label>
-				<input type="text" class="query-input" name="id">
+				<label for="id" class="query-label">貼文:</label>
+				<input type="text" class="query-input" style="width: 5vw;" name="id">
 			</div>
 
 			<input type="submit" class="brown-button" value="刪除">
 		</form>
 		<div>資料同步</div>
 		<a href="/sync"><button class="brown-button">同步</button></a>
+		<div>捐書審核</div>
+		<a href="/review"><button class="brown-button">審核</button></a>
 
 	</div>
 	<script src="{{url_for('static', filename='script.js')}}"></script>

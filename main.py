@@ -136,7 +136,7 @@ def protected():
 	if request.method == "POST":  #已領取
 		post_id = request.form["id"]
 		cur.execute(f"DELETE FROM gets WHERE post_id={post_id}")
-		cur.execute(f"DELETE FROM posts WHERE time={post_id}")
+		cur.execute(f"DELETE FROM posts WHERE id={post_id}")
 		con.commit()
 
 	google_id = session['google_id']
@@ -235,10 +235,9 @@ def giveCallback():
 		book = book_query.fetchone()
 		book_name = book[1]
 		book_subject = book[3]
-		data = [(id, book_name, session["google_id"], session["name"], description,
-		         time.time(), 0, time.ctime())]
+		data = [(id, book_name, session["google_id"], session["name"], description, int(str(time.time())[-4:]), 0, time.ctime())]
+		print(data)
 		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?)", data)
-		#cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={id}")
 		cur.execute(
 		 f"UPDATE users SET coins=coins+10 WHERE google_id={session['google_id']}")
 		con.commit()
@@ -249,9 +248,9 @@ def giveCallback():
 @login_is_required
 def getCallback():
 	if request.method == "POST":
-		time = request.form["time"]
+		post_id = request.form["post_id"]
 		getter_id = session["google_id"]
-		post_query = cur.execute(f"SELECT * FROM posts WHERE time={time}")
+		post_query = cur.execute(f"SELECT * FROM posts WHERE post_id={post_id}")
 		post = post_query.fetchone()
 		book_id = post[0]
 		giver_id = post[2]
@@ -271,7 +270,7 @@ def getCallback():
 		getter_coins = getter[3]
 		if getter_coins >= 10:
 			cur.execute(
-			 f"INSERT INTO gets VALUES ('{giver_name}', '{book_name}', '{description}', {time}, {getter_id}, {giver_id}, 0)"
+			 f"INSERT INTO gets VALUES ('{giver_name}', '{book_name}', '{description}', {post_id}, {getter_id}, {giver_id}, 0)"
 			)
 			cur.execute(f"UPDATE posts SET status = 1 WHERE time={time};")
 			cur.execute(
@@ -312,9 +311,30 @@ def admin():
 def delete():
 	id = float(request.form["id"])
 	print(id)
-	#cur.execute(f"DELETE FROM posts WHERE time={id}")
+	#cur.execute(f"DELETE FROM posts WHERE post_id={id}")
 	#con.commit()
 	return redirect("/admin")
+
+
+@app.route("/review", endpoint='review')
+@admin_is_required
+def review():
+	posts_query = cur.execute("SELECT * FROM posts WHERE status=0")
+	posts = posts_query.fetchall()
+	return render_template("review.html", posts=posts)
+
+
+@app.route("/passed", endpoint='passed', methods=["POST"])
+@admin_is_required
+def passed():
+	passed_id = request.form["post_id"]
+	cur.execute(f"UPDATE posts SET status=1 WHERE id={passed_id}")
+	book_query = cur.execute(f"SELECT book_id FROM posts WHERE id={passed_id}")
+	book_id = book_query.fetchone()
+	cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={book_id}")
+	con.commit()
+	return redirect("/review")
+	
 
 
 if __name__ == '__main__':
