@@ -238,8 +238,6 @@ def giveCallback():
 		data = [(id, book_name, session["google_id"], session["name"], description, int(str(time.time())[-4:]), 0, time.ctime())]
 		print(data)
 		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?)", data)
-		cur.execute(
-		 f"UPDATE users SET coins=coins+10 WHERE google_id={session['google_id']}")
 		con.commit()
 	return render_template("giveCallback.html", subject=book_subject)
 
@@ -331,6 +329,8 @@ def passed():
 	cur.execute(f"UPDATE posts SET status=1 WHERE id={passed_id}")
 	book_query = cur.execute(f"SELECT book_id FROM posts WHERE id={passed_id}")
 	book_id = book_query.fetchone()
+	user_query = cur.execute(f"SELECT user_id FROM posts WHERE id={passed_id}")
+	user_id = user_query.fetchone()
 	cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={book_id}")
 	con.commit()
 	return redirect("/review")
