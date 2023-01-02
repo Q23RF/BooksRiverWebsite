@@ -307,9 +307,9 @@ def admin():
 @app.route("/delete", endpoint='delete', methods=["POST"])
 @admin_is_required
 def delete():
-	id = request.form["id"]
+	id = request.form["post_id"]
 	print(id)
-	cur.execute(f"DELETE FROM posts WHERE post_id={id}")
+	cur.execute(f"DELETE FROM posts WHERE id={id}")
 	con.commit()
 	return redirect("/admin")
 
