@@ -318,7 +318,7 @@ def delete():
 @admin_is_required
 def review():
 	if request.method == "POST":
-		id = request.form["post-id"]
+		id = request.form["post_id"]
 		posts_query = cur.execute(f"SELECT * FROM posts WHERE status=0 AND id={id}")
 	else:
 		posts_query = cur.execute("SELECT * FROM posts WHERE status=0")
