@@ -235,7 +235,7 @@ def giveCallback():
 		book = book_query.fetchone()
 		book_name = book[1]
 		book_subject = book[3]
-		data = [(id, book_name, session["google_id"], session["name"], description, int(str(time.time())[-4:]), 0, time.ctime())]
+		data = [(id, book_name, session["google_id"], session["name"], description, str(time.time())[-4:], 0, time.ctime())]
 		print(data)
 		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?)", data)
 		con.commit()
@@ -314,10 +314,14 @@ def delete():
 	return redirect("/admin")
 
 
-@app.route("/review", endpoint='review')
+@app.route("/review", endpoint='review', methods=["GET", "POST"])
 @admin_is_required
 def review():
-	posts_query = cur.execute("SELECT * FROM posts WHERE status=0")
+	if request.method == "POST":
+		id = request.form["post-id"]
+		posts_query = cur.execute(f"SELECT * FROM posts WHERE status=0 AND id={id}")
+	else:
+		posts_query = cur.execute("SELECT * FROM posts WHERE status=0")
 	posts = posts_query.fetchall()
 	return render_template("review.html", posts=posts)
 

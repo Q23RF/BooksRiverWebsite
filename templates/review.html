@@ -32,6 +32,10 @@
 
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
+		<form class="query-form" action="/review" method="post">
+			<label for="post-id" class="query-label">捐書碼:</label>
+			<input name="post-id" type="text" class="query-input">
+		</form>
 		{% for r in posts %}
 		<div class="post-container">
 			<div class="post-text">
@@ -40,9 +44,10 @@
 				<div>捐贈時間: {{ r[7] }}</div>
 				<div>捐書碼: {{ r[5] }}</div>
 			</div>
+			<div>
 			<form action='/passed' method="post">
 				<input type="hidden" name="post_id" value= {{ r[5] }}>
-				<input type="submit" class="brown-button" value="通過">
+				<input type="submit" class="brown-button" value="顯示貼文">
 			</form>
 			<form action='/censored' method="post">
 				<input type="hidden" name="post_id" value= {{ r[5] }}>
@@ -50,8 +55,9 @@
 			</form>
 			<form action='/delete' method="post">
 				<input type="hidden" name="post_id" value= {{ r[5] }}>
-				<input type="submit" class="brown-button" value="刪除">
+				<input type="submit" class="brown-button" value="刪除貼文">
 			</form>
+			</div>
 		</div>
 		{% endfor %}
 	</div>
