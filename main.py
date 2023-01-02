@@ -213,7 +213,7 @@ def give():
 def get():
 	if request.method == "POST":
 		id = request.form["id"]
-		q = cur.execute(f"SELECT * FROM posts WHERE book_id='{id}' AND status=1")
+		q = cur.execute(f"SELECT * FROM posts WHERE book_id='{id}' AND (status=1 OR status=2)")
 		results = q.fetchall()
 		if len(results) > 0:
 			return render_template("get.html", results=results)
@@ -307,10 +307,10 @@ def admin():
 @app.route("/delete", endpoint='delete', methods=["POST"])
 @admin_is_required
 def delete():
-	id = float(request.form["id"])
+	id = request.form["id"]
 	print(id)
-	#cur.execute(f"DELETE FROM posts WHERE post_id={id}")
-	#con.commit()
+	cur.execute(f"DELETE FROM posts WHERE post_id={id}")
+	con.commit()
 	return redirect("/admin")
 
 
@@ -332,9 +332,10 @@ def passed():
 	passed_id = request.form["post_id"]
 	cur.execute(f"UPDATE posts SET status=1 WHERE id={passed_id}")
 	book_query = cur.execute(f"SELECT book_id FROM posts WHERE id={passed_id}")
-	book_id = book_query.fetchone()
+	book_id = book_query.fetchone()[0]
 	user_query = cur.execute(f"SELECT user_id FROM posts WHERE id={passed_id}")
-	user_id = user_query.fetchone()
+	user_id = user_query.fetchone()[0]
+	print(user_id)
 	cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={book_id}")
 	cur.execute(f"UPDATE users SET coins=coins+10 WHERE google_id={user_id}")
 	con.commit()
@@ -348,13 +349,13 @@ def censored():
 	cur.execute(f"UPDATE posts SET status=2 WHERE id={censored_id}")
 	cur.execute(f"UPDATE posts SET description='(不予顯示)' WHERE id={censored_id}")
 	book_query = cur.execute(f"SELECT book_id FROM posts WHERE id={censored_id}")
-	book_id = book_query.fetchone()
+	book_id = book_query.fetchone()[0]
 	user_query = cur.execute(f"SELECT user_id FROM posts WHERE id={censored_id}")
-	user_id = user_query.fetchone()
+	user_id = user_query.fetchone()[0]
 	cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={book_id}")
 	cur.execute(f"UPDATE users SET coins=coins+10 WHERE google_id={user_id}")
 	con.commit()
-	return redirect("/censored")
+	return redirect("/review")
 
 if __name__ == '__main__':
 	app.run(port=8000, host='0.0.0.0', debug=False)
