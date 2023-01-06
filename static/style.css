@@ -189,6 +189,22 @@ button, input[type="submit"] {
 	color: var(--wh);
 }
 
+.long-text {
+	width: 75%;
+	margin-bottom: 50px;
+}
+
+.long-text h1 {
+	text-align: center;
+	font-weight: 500;
+	margin-bottom: 20px;
+}
+
+.long-text h2 {
+	margin-top: 20px;
+	font-weight: 500;
+}
+
 @media (min-width: 720px) {
 .query-input.three{
 	width: calc(60vw - 18px);
