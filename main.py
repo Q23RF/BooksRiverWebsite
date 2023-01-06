@@ -172,6 +172,14 @@ def protected():
 @login_is_required
 def query():
 	if request.method == "POST":
+		user_query = cur.execute(f"SELECT updating FROM users WHERE google_id={session['google_id']}")
+		user_updating = user_query.fetchone()[0]
+		if user_updating == 1:
+			count = cur.execute("SELECT count(*) FROM books")
+			current_count = count.fetchone()[0]
+			parse_more(current_count)
+			cur.execute(f"UPDATE users SET updating=0 WHERE google_id={session['google_id']}")
+			con.commit()
 		sql = "SELECT * FROM books WHERE "
 		constraints = []
 		name = request.form["name"]
@@ -285,11 +293,12 @@ def getCallback():
 @app.route("/newBook", endpoint='newBook')
 @login_is_required
 def newBook():
-	#return render_template("newBook.html")
+	cur.execute(f"UPDATE users SET updating=1 WHERE google_id={session['google_id']}")
+	con.commit()
 	return render_template("newBookTmp.html")
 
 
-@app.route("/sync", endpoint='sync', methods=["GET", "POST"])
+@app.route("/sync", endpoint='sync')
 @login_is_required
 def sync():
 	count = cur.execute("SELECT count(*) FROM books")
