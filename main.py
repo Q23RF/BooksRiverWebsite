@@ -109,10 +109,10 @@ def callback():
 	session["google_id"] = id_info.get("sub")
 	session["name"] = id_info.get("name")
 	try:
-		data = [(session["name"], id_info.get("email"), session["google_id"], 0)]
-		cur.executemany("INSERT INTO users VALUES(?, ?, ?, ?)", data)
+		data = [(session["name"], id_info.get("email"), session["google_id"], 0, 0)]
+		cur.executemany("INSERT INTO users VALUES(?, ?, ?, ?, ?)", data)
 		con.commit()
-		msg = "歡迎您加入書愛流動網站會員！\n\n若這個帳號不是您本人註冊，請回信告知。\n\n書愛流動專案團隊\nbooksriver.noreply@gmail.com\nins: @booksriver.2022"
+		msg = "歡迎您加入書愛流動網站會員！\n若這個帳號不是您本人註冊，請回信告知。\n\n書愛流動專案團隊\nbooksriver.noreply@gmail.com\nins: @booksriver.2022"
 		notice.send_mail(id_info.get("email"), "【書愛流動】註冊通知", msg)
 	except:  # old user
 		pass
