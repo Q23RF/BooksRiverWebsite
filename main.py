@@ -217,7 +217,6 @@ def give():
 
 
 @app.route("/get", endpoint='get', methods=["GET", "POST"])
-@login_is_required
 def get():
 	if request.method == "POST":
 		id = request.form["id"]
@@ -256,7 +255,7 @@ def getCallback():
 	if request.method == "POST":
 		post_id = request.form["post_id"]
 		getter_id = session["google_id"]
-		post_query = cur.execute(f"SELECT * FROM posts WHERE post_id={post_id}")
+		post_query = cur.execute(f"SELECT * FROM posts WHERE id={post_id}")
 		post = post_query.fetchone()
 		book_id = post[0]
 		giver_id = post[2]
@@ -276,9 +275,8 @@ def getCallback():
 		getter_coins = getter[3]
 		if getter_coins >= 10:
 			cur.execute(
-			 f"INSERT INTO gets VALUES ('{giver_name}', '{book_name}', '{description}', {post_id}, {getter_id}, {giver_id}, 0)"
-			)
-			cur.execute(f"UPDATE posts SET status = 1 WHERE time={time};")
+			 f"INSERT INTO gets VALUES ('{giver_name}', '{book_name}', '{description}', {post_id}, {getter_id}, {giver_id}, 0)")
+			cur.execute(f"UPDATE posts SET status=3 WHERE id={post_id};")
 			cur.execute(
 			 f"UPDATE books SET quantity = quantity-1 WHERE id_inherited={book_id};")
 
