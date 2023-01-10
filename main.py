@@ -316,6 +316,12 @@ def admin():
 def delete():
 	id = request.form["post_id"]
 	print(id)
+	user_id_query = cur.execute(f"SELECT user_id FROM posts WHERE id={id}")
+	user_id = user_id_query.fetchone()[0]
+	user_email_query = cur.execute(f"SELECT email FROM users WHERE google_id={user_id}")
+	user_email = user_email_query.fetchone()[0]
+	msg = "test msg: weve deleted ur post!"
+	notice.send_mail(user_email, "【書愛流動】審核未通過", msg)
 	cur.execute(f"DELETE FROM posts WHERE id={id}")
 	con.commit()
 	return redirect("/admin")
