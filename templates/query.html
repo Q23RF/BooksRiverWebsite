@@ -94,15 +94,19 @@
 						<div>庫存: {{ r[5] }}</div>
 					</div>
 					<div>
-						<form action='/give' method="post">
-							<input type="hidden" name="id" value={{ r[0] }}>
-							<input type="submit" class="brown-button" value="我要捐書">
-						</form>
-						<form action='/get' method="post">
-							<input type="hidden" name="id" value={{ r[0] }}>
-							<input type="submit" class="brown-button" value="我要取書">
-						</form>
-						<a href="https://study-guides.dstw.dev/detail.php?id={{ r[0] }}" target="_blank"><button class="brown-button">看看評價</button></a>
+						<div>
+							<a href="/give/id={{ r[0] }}">
+								<button class="brown-button">我要捐書</button>
+							</a>
+						</div>
+						<div>
+							<a href="/get/id={{ r[0] }}">
+								<button class="brown-button">我要取書</button>
+							</a>
+					</div>
+					<div>
+							<a href="https://study-guides.dstw.dev/detail.php?id={{ r[0] }}" target="_blank"><button class="brown-button">看看評價</button></a>
+					</div>
 					</div>
 				</div>
 			{% endfor %}

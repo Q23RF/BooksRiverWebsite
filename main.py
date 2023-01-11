@@ -206,30 +206,21 @@ def query():
 		return render_template("query.html")
 
 
-@app.route("/give", endpoint='give', methods=["GET", "POST"])
-@login_is_required
-def give():
-	if request.method == "POST":
-		id = request.form["id"]
-		return render_template("give.html", id=id)
+@app.route("/give/id=<id>", endpoint='give')
+def give(id):
+	print(id)
+	return render_template("give.html", id=id)
+
+
+@app.route("/get/id=<id>", endpoint='get')
+def get(id):
+	query = cur.execute(f"SELECT * FROM posts WHERE book_id='{id}' AND (status=1 OR status=2)")
+	results = query.fetchall()
+	if len(results) > 0:
+		return render_template("get.html", results=results)
 	else:
-		return redirect("/query")
-
-
-@app.route("/get", endpoint='get', methods=["GET", "POST"])
-def get():
-	if request.method == "POST":
-		id = request.form["id"]
-		q = cur.execute(f"SELECT * FROM posts WHERE book_id='{id}' AND (status=1 OR status=2)")
-		results = q.fetchall()
-		if len(results) > 0:
-			return render_template("get.html", results=results)
-		else:
-			empty = "暫時沒有人捐贈這本書..."
-			return render_template("get.html", empty=empty)
-
-	else:
-		return redirect("/query")
+		empty = "暫時沒有人捐贈這本書..."
+		return render_template("get.html", empty=empty)
 
 
 @app.route("/giveCallback", endpoint='giveCallback', methods=["GET", "POST"])

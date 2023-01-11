@@ -169,6 +169,7 @@ button, input[type="submit"] {
 }
 
 .post-text {
+	width: 55%;
 	margin: 7.5px 10px 7.5px 0;
 }
 
