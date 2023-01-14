@@ -365,5 +365,14 @@ def censored():
 def policy():
 	return render_template("policy.html")
 
+@app.route("/studyguides", endpoint='studyguides')
+def studyguides():
+	#origin = request.headers[""]
+	#if origin == sg_url:
+		#coupon = request.
+		#cur.execute(f"INSERT INTO coupons VALUES")
+		#return coupon + " added"
+	return "施工中"
+
 if __name__ == '__main__':
 	app.run(port=8000, host='0.0.0.0', debug=False)

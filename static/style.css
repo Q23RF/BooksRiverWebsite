@@ -20,7 +20,7 @@ body{
     height: auto;
 }
 
-.banner_container img{
+.banner-container img{
     width: 100%;
     height: auto;
 }
@@ -114,18 +114,14 @@ a {
 	text-align: center;
 }
 
-.login {
-	margin-top: 20px;
-	background-color: var(--wh);
-	color: var(--brDark);
-}
+
 
 button, input[type="submit"] {
 	font-size: min(2.5vw, 18px);
     font-family: 'Noto Sans TC', Arial, sans-serif;
 	border: none;
 	border-radius: 5px;
-	padding: 10px 20px;
+	padding: 10px 16px;
 	margin: 7.5px 0;
 	cursor: pointer;
 }
@@ -206,9 +202,27 @@ button, input[type="submit"] {
 	font-weight: 500;
 }
 
+.index-a-container {
+	width: min(75%, 225px);
+	margin-top: 20px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+@media (min-width: 540px) {
+.index-a-container {
+	width: 290px;
+}
+}
+
 @media (min-width: 720px) {
 .query-input.three{
 	width: calc(60vw - 18px);
+}
+
+.index-a-container {
+	width: 320px;
 }
 }
 
