@@ -365,14 +365,13 @@ def censored():
 def policy():
 	return render_template("policy.html")
 
-@app.route("/studyguides", endpoint='studyguides')
+@app.route("/studyguides", endpoint='studyguides', methods=["POST"])
 def studyguides():
-	#origin = request.headers[""]
-	#if origin == sg_url:
-		#coupon = request.
-		#cur.execute(f"INSERT INTO coupons VALUES")
-		#return coupon + " added"
-	return "施工中"
+	sg_url = "https://study-guides.dstw.dev/cms.php"
+	print(request.headers.get("Referer"))
+	code = request.form["redeemCode"]
+	cur.execute(f"INSERT INTO codes VALUES ({code}, 0)")
+	return code + " added"
 
 if __name__ == '__main__':
 	app.run(port=8000, host='0.0.0.0', debug=False)
