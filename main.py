@@ -229,13 +229,14 @@ def giveCallback():
 	if request.method == "POST":
 		id = request.form["id"]
 		description = request.form["description"]
+		box = request.form["box"]
 		book_query = cur.execute(f"SELECT * FROM books WHERE id_inherited={id}")
 		book = book_query.fetchone()
 		book_name = book[1]
 		book_subject = book[3]
-		data = [(id, book_name, session["google_id"], session["name"], description, str(time.time())[-4:], 0, time.ctime())]
+		data = [(id, book_name, session["google_id"], session["name"], description, str(time.time())[-4:], 0, time.ctime(), box)]
 		print(data)
-		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?)", data)
+		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", data)
 		con.commit()
 	return render_template("giveCallback.html", subject=book_subject)
 
@@ -244,6 +245,8 @@ def giveCallback():
 @login_is_required
 def getCallback():
 	if request.method == "POST":
+		box= request.form["box"]
+		print(box)
 		post_id = request.form["post_id"]
 		getter_id = session["google_id"]
 		post_query = cur.execute(f"SELECT * FROM posts WHERE id={post_id}")
@@ -261,12 +264,11 @@ def getCallback():
 		giver_name = giver[0]
 
 		getter_query = cur.execute(
-		 f"SELECT * FROM users WHERE google_id={getter_id}")
-		getter = getter_query.fetchone()
-		getter_coins = getter[3]
+		 f"SELECT coins FROM users WHERE google_id={getter_id}")
+		getter_coins = getter_query.fetchone()[0]
 		if getter_coins >= 10:
 			cur.execute(
-			 f"INSERT INTO gets VALUES ('{giver_name}', '{book_name}', '{description}', {post_id}, {getter_id}, {giver_id}, 0)")
+			 f"INSERT INTO gets VALUES ('{giver_name}', '{book_name}', '{description}', {post_id}, {getter_id}, {giver_id}, 0, '{box}')")
 			cur.execute(f"UPDATE posts SET status=3 WHERE id={post_id};")
 			cur.execute(
 			 f"UPDATE books SET quantity = quantity-1 WHERE id_inherited={book_id};")

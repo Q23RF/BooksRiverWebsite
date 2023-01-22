@@ -43,9 +43,10 @@
 		<div class="post-container">
 			<div class="post-text">
 				<div>捐書人: {{ g[0] }}</div>
-				<div>捐書碼: {{ g[5] }}</div>
+				<div>捐書碼: {{ g[3] }}</div>
 				<div>書名: {{ g[1] }}</div>
 				<div>書況簡述: {{ g[2] }}</div>
+				<div>領取書箱: {{ g[7] }}</div>
 			</div>
 			<form action="/protected" method="post">
 				<input name="id" type="hidden" value={{ g[3] }}>
@@ -61,6 +62,7 @@
 			<div class="post-text">
 				<div>捐贈書籍: {{ g[1] }}</div>
 				<div>捐贈時間: {{ g[7] }}</div>
+				<div>放置書箱: {{ g[8] }}</div>
 			</div>
 		</div>
 		{% endfor %}

@@ -38,7 +38,14 @@
 				<div><label for="description" class="query-label">書況說明:</label></div>
 				<textarea name="description" class="query-input"></textarea>
 			</div>
-
+			<div>
+				<div><label for="box" class="query-label">放置書箱:</label></div>
+				<select name="box" class="query-input">
+					<option value="0-1">0-1</option>
+					<option value="0-2">0-2</option>
+					<option value="0-3">0-3</option>
+				</select>
+			</div>
 			<input type="hidden" name="id" value={{ id }}>
 			<input type="submit" class="brown-button" value="Post">
 

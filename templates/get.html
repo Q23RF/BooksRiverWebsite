@@ -42,9 +42,18 @@
 				<div>書況簡述: {{ r[4] }}</div>
 				<div>捐贈時間: {{ r[7] }}</div>
 				<div>捐書碼: {{ r[5] }}</div>
+				<div>所在書箱: {{ r[8] }}</div>
 			</div>
 			<form action='/getCallback' method="post">
 				<input type="hidden" name="post_id" value= {{ r[5] }}>
+				<div>
+					<label for="box" class="query-label">領取書箱:</label>
+					<select name="box" class="query-input" style="width: 32%;">
+						<option value="0-1">0-1</option>
+						<option value="0-2">0-2</option>
+						<option value="0-3">0-3</option>
+					</select>
+				</div>
 				<input type="submit" class="brown-button" value="以知識貨幣兌換">
 			</form>
 		</div>
