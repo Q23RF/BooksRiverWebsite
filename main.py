@@ -29,7 +29,6 @@ def parse_more(current):
 	}
 	empty_count = 0
 	while empty_count < 10:
-		print("parsing "+str(current))
 		req = rq.Request(url + str(current), headers=hdr)
 		page = rq.urlopen(req)
 		content = page.read()
@@ -43,7 +42,6 @@ def parse_more(current):
 			cur.executemany("INSERT INTO books VALUES(?, ?, ?, ?, ?, ?)", data)
 			con.commit()
 		else:
-			print(str(current)+" is empty")
 			empty_count += 1
 		current += 1
 	print("done synchronizing")
