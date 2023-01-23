@@ -34,7 +34,7 @@
 	<div class="container">
   		<button class="open" onclick="sopen()">〉</button>
 		<h2 style="font-weight: normal;">新增參考書</h2>
-        <form action="https://study-guides.dstw.dev/newBook.php" method="post" class="query-form" enctype="multipart/form-data">
+        <form action="https://study-guides.dstw.dev/newBook.php" method="post" target="_blank" class="query-form" enctype="multipart/form-data">
 			<div>
             <label class="query-label">科目：</label>
             <select class="query-input" name="subject" required>
@@ -129,7 +129,7 @@
                     }
                 };
             </script>
-            <input type="submit" class="brown-button">
+            <input type="submit" class="brown-button" onclick="window.location.href='https://booksriver.q23rf.repl.co/sync'">
         </form>
 	</div>
 	<script src="{{url_for('static', filename='script.js')}}"></script>

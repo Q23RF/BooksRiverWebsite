@@ -28,7 +28,8 @@ def parse_more(current):
 	 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'
 	}
 	empty_count = 0
-	while empty_count < 3:
+	while empty_count < 10:
+		print("parsing "+str(current))
 		req = rq.Request(url + str(current), headers=hdr)
 		page = rq.urlopen(req)
 		content = page.read()
@@ -36,12 +37,13 @@ def parse_more(current):
 		result = soup.find("div", {"class": "name_rating"})
 		name = result.find("h2").get_text()
 		tags = result.find("p").get_text().split(" / ")
+		data = [(current, name, tags[0], tags[1], tags[2], 0)]
+		print(data)
 		if len(name) > 0:
-			print("adding ", name)
-			data = [(current, name, tags[0], tags[1], tags[2], 0)]
 			cur.executemany("INSERT INTO books VALUES(?, ?, ?, ?, ?, ?)", data)
 			con.commit()
 		else:
+			print(str(current)+" is empty")
 			empty_count += 1
 		current += 1
 	print("done synchronizing")
@@ -284,9 +286,7 @@ def getCallback():
 @app.route("/newBook", endpoint='newBook')
 @login_is_required
 def newBook():
-	cur.execute(f"UPDATE users SET updating=1 WHERE google_id={session['google_id']}")
-	con.commit()
-	return render_template("newBookTmp.html")
+	return render_template("newBook.html")
 
 
 @app.route("/sync", endpoint='sync')
@@ -295,7 +295,7 @@ def sync():
 	count = cur.execute("SELECT count(*) FROM books")
 	current_count = count.fetchone()[0]
 	parse_more(current_count)
-	return redirect("/admin")
+	return redirect("/query")
 
 
 @app.route("/admin", endpoint='admin', methods=["GET", "POST"])
