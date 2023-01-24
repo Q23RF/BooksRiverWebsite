@@ -9,6 +9,7 @@ import google.auth.transport.requests
 from bs4 import BeautifulSoup
 from urllib import request as rq
 import notice
+import validation
 
 app = Flask('BooksRiver')
 app.secret_key = os.environ['SECRET_KEY']
@@ -216,11 +217,14 @@ def give(id):
 def get(id):
 	query = cur.execute(f"SELECT * FROM posts WHERE book_id='{id}' AND (status=1 OR status=2)")
 	results = query.fetchall()
+	book_query = cur.execute(f"SELECT name FROM books WHERE id_inherited='{id}'")
+	name = book_query.fetchone()[0]
+	print(name)
 	if len(results) > 0:
-		return render_template("get.html", results=results)
+		return render_template("get.html", name=name, results=results)
 	else:
 		empty = "暫時沒有人捐贈這本書..."
-		return render_template("get.html", empty=empty)
+		return render_template("get.html", name=name, empty=empty)
 
 
 @app.route("/giveCallback", endpoint='giveCallback', methods=["GET", "POST"])
@@ -233,12 +237,13 @@ def giveCallback():
 		book_query = cur.execute(f"SELECT * FROM books WHERE id_inherited={id}")
 		book = book_query.fetchone()
 		book_name = book[1]
-		book_subject = book[3]
 		data = [(id, book_name, session["google_id"], session["name"], description, str(time.time())[-4:], 0, time.ctime(), box)]
 		print(data)
 		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", data)
 		con.commit()
-	return render_template("giveCallback.html", subject=book_subject)
+		validation_code = validation.generate()
+		print(validation_code)
+	return render_template("giveCallback.html", code=validation_code)
 
 
 @app.route("/getCallback", endpoint='getCallback', methods=["GET", "POST"])
