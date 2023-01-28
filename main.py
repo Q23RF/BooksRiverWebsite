@@ -173,14 +173,6 @@ def protected():
 @login_is_required
 def query():
 	if request.method == "POST":
-		user_query = cur.execute(f"SELECT updating FROM users WHERE google_id={session['google_id']}")
-		user_updating = user_query.fetchone()[0]
-		if user_updating == 1:
-			count = cur.execute("SELECT count(*) FROM books")
-			current_count = count.fetchone()[0]
-			parse_more(current_count)
-			cur.execute(f"UPDATE users SET updating=0 WHERE google_id={session['google_id']}")
-			con.commit()
 		sql = "SELECT * FROM books WHERE "
 		constraints = []
 		name = request.form["name"]
