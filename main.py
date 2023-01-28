@@ -365,9 +365,10 @@ def policy():
 @app.route("/studyguides", endpoint='studyguides', methods=["POST"])
 def studyguides():
 	sg_url = "https://study-guides.dstw.dev/cms.php"
-	print(request.headers.get("Referer"))
 	code = request.form["redeemCode"]
-	cur.execute(f"INSERT INTO codes VALUES ({code}, 0)")
+	print(code)
+	cur.execute(f"INSERT INTO codes VALUES ('{code}', 0)")
+	con.commit()
 	return code + " added"
 
 if __name__ == '__main__':
