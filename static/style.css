@@ -169,13 +169,6 @@ button, input[type="submit"] {
 	margin: 7.5px 10px 7.5px 0;
 }
 
-.alert-box {
-	display: none;
-	background: var(--whDark);
-	color: var(--brDark);
-	width: 75%;
-}
-
 .white-button {
 	background: var(--wh);
 	color: var(--brDark);

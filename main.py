@@ -370,12 +370,17 @@ def redeem():
 		try:
 			code_status = code_query.fetchone()[0]
 			if code_status==0: #valid
-				print("valid!")
+				cur.execute(f"UPDATE users SET coins=coins+5 WHERE google_id={session['google_id']}")
+				cur.execute(f"UPDATE codes SET status=1 WHERE redeemCode='{code}'")
+				con.commit()
+				msg = f"兌換碼{code}使用成功！"
 			else:
-				print("expired...")
+				msg = f"兌換碼{code}已失效..."
 		except:
-			print("the code doesnt exist ?_?")
-	return render_template("redeem.html")
+			msg = f"找不到兌換碼{code}..."
+		return render_template("redeem.html", msg=msg)
+	else:
+		return render_template("redeem.html")
 
 if __name__ == '__main__':
 	app.run(port=8000, host='0.0.0.0', debug=False)
