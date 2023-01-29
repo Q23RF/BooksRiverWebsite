@@ -296,15 +296,15 @@ def admin():
 @admin_is_required
 def delete():
 	id = request.form["post_id"]
-	user_id_query = cur.execute(f"SELECT user_id FROM posts WHERE id={id}")
+	user_id_query = cur.execute(f"SELECT user_id FROM posts WHERE id='{id}'")
 	user_id = user_id_query.fetchone()[0]
 	user_email_query = cur.execute(f"SELECT email FROM users WHERE google_id={user_id}")
 	user_email = user_email_query.fetchone()[0]
 	msg = "test msg: weve deleted ur post!"
 	notice.send_mail(user_email, "【書愛流動】審核未通過", msg)
-	cur.execute(f"DELETE FROM posts WHERE id={id}")
+	cur.execute(f"DELETE FROM posts WHERE id='{id}'")
 	con.commit()
-	return redirect("/admin")
+	return redirect("/review")
 
 
 @app.route("/review", endpoint='review', methods=["GET", "POST"])
@@ -312,7 +312,7 @@ def delete():
 def review():
 	if request.method == "POST":
 		id = request.form["post_id"]
-		posts_query = cur.execute(f"SELECT * FROM posts WHERE status=0 AND id={id}")
+		posts_query = cur.execute(f"SELECT * FROM posts WHERE status=0 AND id='{id}'")
 	else:
 		posts_query = cur.execute("SELECT * FROM posts WHERE status=0")
 	posts = posts_query.fetchall()
@@ -323,10 +323,10 @@ def review():
 @admin_is_required
 def passed():
 	passed_id = request.form["post_id"]
-	cur.execute(f"UPDATE posts SET status=1 WHERE id={passed_id}")
-	book_query = cur.execute(f"SELECT book_id FROM posts WHERE id={passed_id}")
+	cur.execute(f"UPDATE posts SET status=1 WHERE id='{passed_id}'")
+	book_query = cur.execute(f"SELECT book_id FROM posts WHERE id='{passed_id}'")
 	book_id = book_query.fetchone()[0]
-	user_query = cur.execute(f"SELECT user_id FROM posts WHERE id={passed_id}")
+	user_query = cur.execute(f"SELECT user_id FROM posts WHERE id='{passed_id}'")
 	user_id = user_query.fetchone()[0]
 	cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={book_id}")
 	cur.execute(f"UPDATE users SET coins=coins+10 WHERE google_id={user_id}")
