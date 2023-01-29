@@ -38,7 +38,6 @@ def parse_more(current):
 		name = result.find("h2").get_text()
 		tags = result.find("p").get_text().split(" / ")
 		data = [(current, name, tags[0], tags[1], tags[2], 0)]
-		print(data)
 		if len(name) > 0:
 			cur.executemany("INSERT INTO books VALUES(?, ?, ?, ?, ?, ?)", data)
 			con.commit()
@@ -201,7 +200,6 @@ def query():
 
 @app.route("/give/id=<id>", endpoint='give')
 def give(id):
-	print(id)
 	return render_template("give.html", id=id)
 
 
@@ -211,7 +209,6 @@ def get(id):
 	results = query.fetchall()
 	book_query = cur.execute(f"SELECT name FROM books WHERE id_inherited='{id}'")
 	name = book_query.fetchone()[0]
-	print(name)
 	if len(results) > 0:
 		return render_template("get.html", name=name, results=results)
 	else:
@@ -219,22 +216,19 @@ def get(id):
 		return render_template("get.html", name=name, empty=empty)
 
 
-@app.route("/giveCallback", endpoint='giveCallback', methods=["GET", "POST"])
+@app.route("/giveCallback", endpoint='giveCallback', methods=["POST"])
 @login_is_required
 def giveCallback():
-	if request.method == "POST":
-		id = request.form["id"]
-		description = request.form["description"]
-		box = request.form["box"]
-		book_query = cur.execute(f"SELECT * FROM books WHERE id_inherited={id}")
-		book = book_query.fetchone()
-		book_name = book[1]
-		data = [(id, book_name, session["google_id"], session["name"], description, str(time.time())[-4:], 0, time.ctime(), box)]
-		print(data)
-		cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", data)
-		con.commit()
-		validation_code = validation.generate()
-		print(validation_code)
+	id = request.form["id"]
+	description = request.form["description"]
+	box = request.form["box"]
+	book_query = cur.execute(f"SELECT * FROM books WHERE id_inherited={id}")
+	book = book_query.fetchone()
+	book_name = book[1]
+	data = [(id, book_name, session["google_id"], session["name"], description, str(time.time())[-4:], 0, time.ctime(), box)]
+	cur.executemany("INSERT INTO posts VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", data)
+	con.commit()
+	validation_code = validation.generate()
 	return render_template("giveCallback.html", code=validation_code)
 
 
@@ -243,7 +237,6 @@ def giveCallback():
 def getCallback():
 	if request.method == "POST":
 		box= request.form["box"]
-		print(box)
 		post_id = request.form["post_id"]
 		getter_id = session["google_id"]
 		post_query = cur.execute(f"SELECT * FROM posts WHERE id={post_id}")
@@ -303,7 +296,6 @@ def admin():
 @admin_is_required
 def delete():
 	id = request.form["post_id"]
-	print(id)
 	user_id_query = cur.execute(f"SELECT user_id FROM posts WHERE id={id}")
 	user_id = user_id_query.fetchone()[0]
 	user_email_query = cur.execute(f"SELECT email FROM users WHERE google_id={user_id}")
@@ -336,7 +328,6 @@ def passed():
 	book_id = book_query.fetchone()[0]
 	user_query = cur.execute(f"SELECT user_id FROM posts WHERE id={passed_id}")
 	user_id = user_query.fetchone()[0]
-	print(user_id)
 	cur.execute(f"UPDATE books SET quantity=quantity+1 WHERE id_inherited={book_id}")
 	cur.execute(f"UPDATE users SET coins=coins+10 WHERE google_id={user_id}")
 	con.commit()
@@ -366,10 +357,14 @@ def policy():
 def studyguides():
 	sg_url = "https://study-guides.dstw.dev/cms.php"
 	code = request.form["redeemCode"]
-	print(code)
 	cur.execute(f"INSERT INTO codes VALUES ('{code}', 0)")
 	con.commit()
 	return code + " added"
+
+@app.route("/redeem", endpoint='redeem')
+@login_is_required
+def redeem():
+	return "施工中..."
 
 if __name__ == '__main__':
 	app.run(port=8000, host='0.0.0.0', debug=False)
