@@ -137,7 +137,7 @@ def protected():
 	if request.method == "POST":  #已領取
 		post_id = request.form["id"]
 		cur.execute(f"DELETE FROM gets WHERE post_id={post_id}")
-		cur.execute(f"DELETE FROM posts WHERE id={post_id}")
+		cur.execute(f"UPDATE posts SET status=4 WHERE id={post_id}")
 		con.commit()
 
 	google_id = session['google_id']
