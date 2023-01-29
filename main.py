@@ -361,10 +361,21 @@ def studyguides():
 	con.commit()
 	return code + " added"
 
-@app.route("/redeem", endpoint='redeem')
+@app.route("/redeem", endpoint='redeem', methods=["GET", "POST"])
 @login_is_required
 def redeem():
-	return "施工中..."
+	if request.method == "POST":
+		code = request.form["code"]
+		code_query = cur.execute(f"SELECT status FROM codes WHERE redeemCode='{code}'")
+		try:
+			code_status = code_query.fetchone()[0]
+			if code_status==0: #valid
+				print("valid!")
+			else:
+				print("expired...")
+		except:
+			print("the code doesnt exist ?_?")
+	return render_template("redeem.html")
 
 if __name__ == '__main__':
 	app.run(port=8000, host='0.0.0.0', debug=False)
