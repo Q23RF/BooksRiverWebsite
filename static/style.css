@@ -13,7 +13,7 @@
 
 body{
     font-family: 'Noto Sans TC', Arial, sans-serif;
-	font-size: min(2.5vw, 18px);
+	font-size: min(3vw, 21px);
 	color: var(--wh);
     background-color: var(--br);
     width: auto;
@@ -38,11 +38,21 @@ body{
 .container{
     width: 100%;
     min-height: 90vh;
-	margin-top: max(3vw, 20px);
+	margin-top: min(2vw, 20px);
     display: flex;
     flex-direction: column;
     align-items: center;
 	flex-wrap: wrap;
+}
+
+.index-container {
+    width: 100%;
+    height: 66.6vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+	justify-content: center;
+	margin: 0;
 }
 
 .sidebar {
@@ -124,7 +134,7 @@ button, input[type="submit"] {
 	border: none;
 	border-radius: 5px;
 	padding: 10px 16px;
-	margin: 7.5px 0;
+	margin: 7.5px 0 0 0;
 	cursor: pointer;
 }
 
@@ -229,6 +239,10 @@ footer {
 	background-size: 100%;
 }
 
+.index-container {
+	height: 55vw;
+}
+
 .query-input.three{
 	width: calc(60vw - 18px);
 }
@@ -239,9 +253,13 @@ footer {
 }
 
 @media (min-width: 960px) {
+.index-container {
+	height: 35vw;
+}
 
 .icons {
     background: url("/static/images/2.png") no-repeat;
+	background-size: 100%;
 }
 
 .query-input {
