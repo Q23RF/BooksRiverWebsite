@@ -1,8 +1,10 @@
 # To-dos
 ## in 3 days
-- 登入說明
+- 合作夥伴介紹
+- 兌換碼demo
 ## in 30 days
-- id傳送: 表單->網址
+- banner大小響應式設計
+- /studyguides接收POST來源驗證
 # status codes
 ## 捐書
 0: 已登記捐書\

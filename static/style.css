@@ -20,9 +20,11 @@ body{
     height: auto;
 }
 
-.banner-container img{
+.banner {
     width: 100%;
-    height: auto;
+	height: 66.6vw;
+    background: url("/static/images/banner_mobile.png") no-repeat;
+	background-size: 100vw auto;
 }
 
 .icons {
@@ -221,6 +223,12 @@ footer {
 }
 
 @media (min-width: 720px) {
+.banner {
+	height: 25vw;
+    background: url("/static/images/banner.png") no-repeat;
+	background-size: 100%;
+}
+
 .query-input.three{
 	width: calc(60vw - 18px);
 }
@@ -231,9 +239,9 @@ footer {
 }
 
 @media (min-width: 960px) {
+
 .icons {
     background: url("/static/images/2.png") no-repeat;
-	background-size: 100vw auto;
 }
 
 .query-input {
