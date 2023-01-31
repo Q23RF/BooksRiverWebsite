@@ -1,9 +1,11 @@
 # To-dos
 ## in 3 days
 - 合作夥伴介紹
+  - 看評價
+  - 知識貨幣兌換
 - 兌換碼demo
 ## in 30 days
-- banner大小響應式設計
+- ~banner大小響應式設計~
 - /studyguides接收POST來源驗證
 # status codes
 ## 捐書

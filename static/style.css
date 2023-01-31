@@ -2,6 +2,7 @@
   --wh:#ededed;
   --whDark:#dcdcdc;
   --br:#9e8c7d;
+  --brMid:#917b6d;
   --brDark:#84695d;
 }
 
@@ -55,10 +56,14 @@ body{
 	margin: 0;
 }
 
+.colab {
+	width: 40%;
+}
+
 .sidebar {
 	padding: 1.5vh 2px 2px 2px;
 	height: 100%;
-	width: 24vw;
+	width: min(45vw, 324px);
 	position: fixed;
 	z-index: 1;
 	top: 0;
@@ -99,7 +104,7 @@ a {
 }
 
 .sidebar-bottom a {
-	font-size: min(2vw, 19.2px);
+	font-size: min(4vw, 20px);
 }
 
 .open {
@@ -116,6 +121,7 @@ a {
 .close {
 	background-color: var(--brDark);
 	color: var(--wh);
+	font-size: min(4vw, 20px);
 	align-self: flex-end;
 	padding: 0;
 	margin-right: min(1.5vw, 20px);
@@ -186,6 +192,11 @@ button, input[type="submit"] {
 	color: var(--brDark);
 }
 
+.white-button a {
+	color: var(--brDark);
+}
+
+
 .brown-button {
 	background-color: var(--brDark);
 	color: var(--wh);
@@ -223,7 +234,7 @@ footer {
 	align-items: center;
 	margin-bottom: 0;
 	margin-top: auto;
-	background: var(--brDark);
+	background: var(--brMid);
 }
 
 @media (min-width: 540px) {
