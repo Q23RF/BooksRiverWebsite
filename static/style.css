@@ -14,7 +14,7 @@
 
 body{
     font-family: 'Noto Sans TC', Arial, sans-serif;
-	font-size: min(3vw, 21px);
+	font-size: min(3.6vw, 21.6px);
 	color: var(--wh);
     background-color: var(--br);
     width: auto;
@@ -48,7 +48,7 @@ body{
 
 .index-container {
     width: 100%;
-    height: 66.6vw;
+    height: 75vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,8 +56,12 @@ body{
 	margin: 0;
 }
 
+.colab-intro, .sg-icon {
+	width: min(35vw, 336px);
+}
+
 .colab {
-	width: 40%;
+	width: 50vw;
 }
 
 .sidebar {
@@ -135,7 +139,7 @@ a {
 
 
 button, input[type="submit"] {
-	font-size: min(2.5vw, 18px);
+	font-size: min(3.6vw, 21.6px);
     font-family: 'Noto Sans TC', Arial, sans-serif;
 	border: none;
 	border-radius: 5px;
@@ -219,7 +223,7 @@ button, input[type="submit"] {
 }
 
 .index-a-container {
-	width: min(75%, 225px);
+	width: 70%;
 	margin-top: 20px;
 	display: flex;
 	justify-content: space-around;
@@ -239,7 +243,7 @@ footer {
 
 @media (min-width: 540px) {
 .index-a-container {
-	width: 290px;
+	width: 375px;
 }
 }
 
@@ -259,13 +263,17 @@ footer {
 }
 
 .index-a-container {
-	width: 320px;
+	width: 420px;
 }
 }
 
 @media (min-width: 960px) {
 .index-container {
 	height: 35vw;
+}
+
+.colab {
+	width: 56vw;
 }
 
 .icons {
