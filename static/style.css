@@ -56,12 +56,32 @@ body{
 	margin: 0;
 }
 
-.colab-intro, .sg-icon {
+.colab-intro, .sg-title {
 	width: min(35vw, 336px);
+}
+
+.sg-icon {
+	width: min(25vw, 180px);
+	object-fit: contain;
 }
 
 .colab {
 	width: 50vw;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+}
+
+.colab-content {
+	width: 50vw;
+	display: flex;
+	justify-content: space-between;
+}
+
+.colab-description {
+	width: 20vw;
+	height: fit-content;
 }
 
 .sidebar {
@@ -268,13 +288,6 @@ footer {
 }
 
 @media (min-width: 960px) {
-.index-container {
-	height: 35vw;
-}
-
-.colab {
-	width: 56vw;
-}
 
 .icons {
     background: url("/static/images/2.png") no-repeat;
@@ -287,5 +300,25 @@ footer {
 
 .query-input.three{
 	width: 558px;
+}
+}
+
+@media (min-width: 1200px) {
+.index-container {
+	height: 35vw;
+}
+
+.colab {
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.colab-content {
+	width: 35vw;
+}
+
+.colab-description {
+	width: 10vw;
 }
 }
