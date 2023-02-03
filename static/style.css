@@ -309,13 +309,14 @@ footer {
 }
 
 .colab {
+	width: 63vw;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 }
 
 .colab-content {
-	width: 35vw;
+	width: 30vw;
 }
 
 .colab-description {
