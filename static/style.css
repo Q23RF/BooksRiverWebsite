@@ -84,6 +84,28 @@ body{
 	height: fit-content;
 }
 
+.join {
+	width: 100vw;
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.join-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 40vw;
+}
+
+.join-content img {
+	width: min(60%, 172.8px);
+}
+
+.join-text {
+	margin-top:min(2.5vw, 18px)
+}
+
+
 .sidebar {
 	padding: 1.5vh 2px 2px 2px;
 	height: 100%;
