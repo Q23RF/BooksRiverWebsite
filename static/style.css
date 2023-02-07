@@ -304,7 +304,7 @@ footer {
 }
 
 .index-container {
-	height: 55vw;
+	height: min(65vw, 546px);
 }
 
 .query-input.three{
@@ -333,9 +333,6 @@ footer {
 }
 
 @media (min-width: 1200px) {
-.index-container {
-	height: 35vw;
-}
 
 .colab {
 	width: 63vw;
