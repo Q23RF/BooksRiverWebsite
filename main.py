@@ -298,6 +298,7 @@ def delete():
 	id = request.form["post_id"]
 	user_id_query = cur.execute(f"SELECT user_id FROM posts WHERE id='{id}'")
 	user_id = user_id_query.fetchone()[0]
+	print(user_id)
 	user_email_query = cur.execute(f"SELECT email FROM users WHERE google_id={user_id}")
 	user_email = user_email_query.fetchone()[0]
 	msg = f"您的{id}號捐書未通過審核，已經刪除。\n\n書愛流動專案團隊\nbooksriver.noreply@gmail.com\nins: @booksriver.2022"
@@ -306,7 +307,6 @@ def delete():
 	cur.execute(f"DELETE FROM posts WHERE id='{id}'")
 	con.commit()
 	return redirect("/review")
-
 
 @app.route("/review", endpoint='review', methods=["GET", "POST"])
 @admin_is_required
